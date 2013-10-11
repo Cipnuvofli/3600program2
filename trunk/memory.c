@@ -1,6 +1,6 @@
 #include<stdio.h>
 #include<memory.h>
-
+//test
 void *mcshMalloc(int bytes, char Memory[], int *position)
 {
         int magnitude = 64;

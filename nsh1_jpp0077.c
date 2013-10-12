@@ -100,8 +100,8 @@ void Envpush(ENV *evlist, char *Variable, char *Val)
     if(evlist[0].envVariable == NULL)
     {
 
-        evlist[0].envVariable = calloc(1, sizeof(Variable));
-        evlist[0].Value = calloc(1, sizeof(Val));
+        evlist[0].envVariable = calloc(1, strlen(Variable));
+        evlist[0].Value = calloc(1, strlen(Val));
         strcpy(evlist[0].envVariable, Variable);
         strcpy(evlist[0].Value, Val);
     }
@@ -141,6 +141,7 @@ void Envextend(ENV *evlist, char* extended, char* extension)
                 {
                     if(sizeof(extended)+sizeof(extension)<COMMAND_SIZE)
                     {
+                        realloc(evlist[q].Value, strlen(extended)+strlen(extension));
                         strcpy(evlist[q].Value, strcat(extended,extension));
                         return;
                     }
@@ -250,8 +251,8 @@ void Aliaspush(ALIAS *Aliaslist, char *Variable, char *Val)
     if(Aliaslist[0].Alias == NULL)
     {
 
-        Aliaslist[0].Alias = calloc(1, sizeof(Variable));
-        Aliaslist[0].Value = calloc(1, sizeof(Val));
+        Aliaslist[0].Alias = calloc(1, strlen(Variable));
+        Aliaslist[0].Value = calloc(1, strlen(Val));
         strcpy(Aliaslist[0].Alias, Variable);
         strcpy(Aliaslist[0].Value, Val);
     }

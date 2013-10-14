@@ -29,6 +29,14 @@ typedef struct envStorage
     char *Value;
 }ENV;
 
+struct block {
+	int size;
+	int status;
+	struct block *next;
+};
+typedef struct block *BlockP;
+
+BlockP MemHead = NULL;
 ENV *Environmentvariables;
 ALIAS *Aliases;
 char **Tokens;//The +1 is for checking if the 3rd argument is NULL, it doesn't work if you don't allocate it.
@@ -111,7 +119,7 @@ void Envpush(ENV *evlist, char *Variable, char *Val)
       {
           if(strcmp(evlist[q].envVariable, Variable) == 0)
           {
-              evlist[q].Value = calloc(1 ,sizeof(Val));
+              evlist[q].Value = calloc(1 ,strlen(Val));
               strcpy(evlist[q].Value, Val);
               return;
           }
@@ -119,8 +127,8 @@ void Envpush(ENV *evlist, char *Variable, char *Val)
       }
       if(q<16)
       {
-        evlist[q].envVariable = calloc(1, sizeof(Variable));
-        evlist[q].Value = calloc(1, sizeof(Val));
+        evlist[q].envVariable = calloc(1, strlen(Variable));
+        evlist[q].Value = calloc(1, strlen(Val));
         strcpy(evlist[q].envVariable, Variable);
         strcpy(evlist[q].Value, Val);
       }
@@ -141,7 +149,6 @@ void Envextend(ENV *evlist, char* extended, char* extension)
                 {
                     if(sizeof(extended)+sizeof(extension)<COMMAND_SIZE)
                     {
-                        realloc(evlist[q].Value, strlen(extended)+strlen(extension));
                         strcpy(evlist[q].Value, strcat(extended,extension));
                         return;
                     }
@@ -168,19 +175,21 @@ void Envdelete(ENV *evlist, char *target)
     }
         printf("Variable not found\n");
 }
-void envReplace(ENV *evlist, char *Target)//finds an environment variable and replaces it with its value in evlist
+char* envReplace(ENV *evlist, char **Target)//finds an environment variable and replaces it with its value in evlist
 {
-    if (Target[0] == '@')
+    char *OverflowSafety = calloc(1, strlen(*Target));
+    strcpy(OverflowSafety, *Target+strlen(*Target)+1);
+    if (*Target[0] == '@')
     {
-        memmove(Target, Target+1, strlen(Target));
+        memmove(*Target, *Target+1, strlen(*Target));
         for(q = 0; q<16; q++)
         {
             if(evlist[q].envVariable!=NULL)
             {
-                if(strcmp(Target, evlist[q].envVariable)==0)
+                if(strcmp(*Target, evlist[q].envVariable)==0)
                 {
-                    strcpy(Target, evlist[q].Value);
-                    return;
+                    strcpy(*Target, evlist[q].Value);
+                    return OverflowSafety;
                 }
             }
         }
@@ -189,11 +198,9 @@ void envReplace(ENV *evlist, char *Target)//finds an environment variable and re
     else
     {
         printf("A value that didn't start with @ was an argument\n");
-        return;
+        free(OverflowSafety);
+        return NULL;
     }
-
-
-
 }
 void aliasReplace(ALIAS *Aliaslist, char *Target)
 {
@@ -262,7 +269,7 @@ void Aliaspush(ALIAS *Aliaslist, char *Variable, char *Val)
       {
           if(strcmp(Aliaslist[q].Alias, Variable) == 0)
           {
-              Aliaslist[q].Value = calloc(1 ,sizeof(Val));
+              Aliaslist[q].Value = calloc(1 ,strlen(Val));
               strcpy(Aliaslist[q].Value, Val);
               return;
           }
@@ -270,8 +277,8 @@ void Aliaspush(ALIAS *Aliaslist, char *Variable, char *Val)
       }
       if(q<16)
       {
-        Aliaslist[q].Alias = calloc(1, sizeof(Variable));
-        Aliaslist[q].Value = calloc(1, sizeof(Val));
+        Aliaslist[q].Alias = calloc(1, strlen(Variable));
+        Aliaslist[q].Value = calloc(1, strlen(Val));
         strcpy(Aliaslist[q].Alias, Variable);
         strcpy(Aliaslist[q].Value, Val);
       }
@@ -345,12 +352,11 @@ void commandParser(char *command)
         {
             if(Tokens[2][0]=='@')//Adding content onto the end of an envrionment variable
             {
-                envReplace(Environmentvariables, Tokens[2]);
-                Envextend(Environmentvariables, Tokens[2],Tokens[3]);
+                Envextend(Environmentvariables, Tokens[2], envReplace(Environmentvariables, &Tokens[2]));
             }
             else if(Tokens[3][0] == '@')//Appending the Environment Variable to the end
             {
-                envReplace(Environmentvariables, Tokens[3]);
+                envReplace(Environmentvariables, &Tokens[3]);
                 Envextend(Environmentvariables, Tokens[2],Tokens[3]);
             }
             else

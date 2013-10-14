@@ -13,6 +13,7 @@
 #include<strings.h>
 #include<sys/types.h>
 #include<unistd.h>
+#include<memory.h>
 #define COMMAND_SIZE 64
 
 
@@ -20,6 +21,8 @@ typedef struct aliasStorage
 {
     char *Alias;
     char *Value;
+
+    struct aliasStorage *next;
 }ALIAS;
 
 
@@ -27,6 +30,8 @@ typedef struct envStorage
 {
     char *envVariable;
     char *Value;
+
+    struct envStorage *next;
 }ENV;
 
 struct block {
@@ -38,6 +43,7 @@ typedef struct block *BlockP;
 
 BlockP MemHead = NULL;
 ENV *Environmentvariables;
+int position = 0;
 ALIAS *Aliases;
 char **Tokens;//The +1 is for checking if the 3rd argument is NULL, it doesn't work if you don't allocate it.
 char memory[1048576];//Memory For implementation in Part 2
@@ -108,8 +114,8 @@ void Envpush(ENV *evlist, char *Variable, char *Val)
     if(evlist[0].envVariable == NULL)
     {
 
-        evlist[0].envVariable = calloc(1, strlen(Variable));
-        evlist[0].Value = calloc(1, strlen(Val));
+        evlist[0].envVariable = (char*)nshCalloc(strlen(Variable), memory, &position);
+        evlist[0].Value = (char*)nshCalloc(strlen(Val), memory, &position);
         strcpy(evlist[0].envVariable, Variable);
         strcpy(evlist[0].Value, Val);
     }
@@ -119,7 +125,7 @@ void Envpush(ENV *evlist, char *Variable, char *Val)
       {
           if(strcmp(evlist[q].envVariable, Variable) == 0)
           {
-              evlist[q].Value = calloc(1 ,strlen(Val));
+              evlist[q].Value = (char*)nshCalloc(strlen(Val), memory, &position);
               strcpy(evlist[q].Value, Val);
               return;
           }
@@ -127,8 +133,8 @@ void Envpush(ENV *evlist, char *Variable, char *Val)
       }
       if(q<16)
       {
-        evlist[q].envVariable = calloc(1, strlen(Variable));
-        evlist[q].Value = calloc(1, strlen(Val));
+        evlist[q].envVariable = (char*)nshCalloc(strlen(Variable), memory, &position);
+        evlist[q].Value = (char*)nshCalloc(strlen(Val), memory, &position);
         strcpy(evlist[q].envVariable, Variable);
         strcpy(evlist[q].Value, Val);
       }
@@ -177,7 +183,7 @@ void Envdelete(ENV *evlist, char *target)
 }
 char* envReplace(ENV *evlist, char **Target)//finds an environment variable and replaces it with its value in evlist
 {
-    char *OverflowSafety = calloc(1, strlen(*Target));
+    char *OverflowSafety = (char*)nshCalloc(1, strlen(*Target));
     strcpy(OverflowSafety, *Target+strlen(*Target)+1);
     if (*Target[0] == '@')
     {
@@ -198,21 +204,22 @@ char* envReplace(ENV *evlist, char **Target)//finds an environment variable and 
     else
     {
         printf("A value that didn't start with @ was an argument\n");
-        free(OverflowSafety);
+       //nshfree(OverflowSafety);
         return NULL;
     }
 }
-void aliasReplace(ALIAS *Aliaslist, char *Target)
+char* aliasReplace(ALIAS *Aliaslist, char **Target)
 {
-
+    char *OverflowSafety = (char*)nshCalloc(strlen(*Target), memory, &position);
+    strcpy(OverflowSafety, *Target+strlen(*Target)+1);
     for(q = 0; q<16; q++)
     {
         if(Aliaslist[q].Alias!=NULL)
         {
-            if(strcmp(Target, Aliaslist[q].Alias)==0)
+            if(strcmp(*Target, Aliaslist[q].Alias)==0)
             {
-                strcpy(Target, Aliaslist[q].Value);
-                return;
+                strcpy(*Target, Aliaslist[q].Value);
+                return OverflowSafety;
             }
         }
     }
@@ -258,8 +265,8 @@ void Aliaspush(ALIAS *Aliaslist, char *Variable, char *Val)
     if(Aliaslist[0].Alias == NULL)
     {
 
-        Aliaslist[0].Alias = calloc(1, strlen(Variable));
-        Aliaslist[0].Value = calloc(1, strlen(Val));
+        Aliaslist[0].Alias = (char*)nshCalloc(strlen(Variable), memory, &position);
+        Aliaslist[0].Value = (char*)nshCalloc(strlen(Val), memory, &position);
         strcpy(Aliaslist[0].Alias, Variable);
         strcpy(Aliaslist[0].Value, Val);
     }
@@ -269,7 +276,7 @@ void Aliaspush(ALIAS *Aliaslist, char *Variable, char *Val)
       {
           if(strcmp(Aliaslist[q].Alias, Variable) == 0)
           {
-              Aliaslist[q].Value = calloc(1 ,strlen(Val));
+              Aliaslist[q].Value = (char*)nshCalloc(strlen(Val), memory, &position);
               strcpy(Aliaslist[q].Value, Val);
               return;
           }
@@ -277,8 +284,8 @@ void Aliaspush(ALIAS *Aliaslist, char *Variable, char *Val)
       }
       if(q<16)
       {
-        Aliaslist[q].Alias = calloc(1, strlen(Variable));
-        Aliaslist[q].Value = calloc(1, strlen(Val));
+        Aliaslist[q].Alias = (char*)nshCalloc(strlen(Variable), memory, &position);
+        Aliaslist[q].Value = (char*)nshCalloc(strlen(Val), memory, &position);
         strcpy(Aliaslist[q].Alias, Variable);
         strcpy(Aliaslist[q].Value, Val);
       }
@@ -313,10 +320,10 @@ void commandParser(char *command)
     int argCount = argumentCounter(command);
     int i;
     //Begin String Tokenizer
-    Tokens = calloc(argCount+1, sizeof(char*));//The +1 is for checking if the 3rd argument is NULL, it doesn't work if you don't allocate it.
+    Tokens = (char**)nshCalloc(argCount+1*sizeof(char*), memory, &position);//The +1 is for checking if the 3rd argument is NULL, it doesn't work if you don't allocate it.
     for(i = 0; i<argCount; i++)
     {
-        Tokens[i] = (char*)calloc(COMMAND_SIZE, sizeof(char));//This part may go wrong for some reason outside the debugger. I have no idea why yet
+        Tokens[i] = (char*)nshCalloc(COMMAND_SIZE, memory, &position);//This part may go wrong for some reason outside the debugger. I have no idea why yet
     }
     for(i = 0; i<argCount; i++)
     {
@@ -420,9 +427,9 @@ void commandParser(char *command)
     }
     for(i = 0; i<argCount; i++)
     {
-        free(Tokens[i]);
+        //nshfree(Tokens[i]);
     }
-    free(Tokens);
+    //nshfree(Tokens);
 
 }
 
@@ -438,10 +445,10 @@ int main(int argc, char *argv[])
         }
         return 0;
     }
-    Environmentvariables = calloc(16, 2*COMMAND_SIZE+4);
-    Aliases = calloc(16, 2*COMMAND_SIZE+4);
-    Envpush(Environmentvariables, "Home", "Directory");//Eventually this will actually be a directory path
+    Environmentvariables = (ENV*)nshCalloc(2*COMMAND_SIZE+4, memory, &position);
+    Aliases = (ALIAS*)nshCalloc(2*COMMAND_SIZE+4, memory, &position);
     memset(memory, 0, 1048576);//Clears the memory of Garbage Data
+    Envpush(Environmentvariables, "Home", "Directory");//Eventually this will actually be a directory path
     char command[COMMAND_SIZE];//Command size currently limited to 64 characters including null terminator
 
     while(strcmp("exit", command)!= 0)

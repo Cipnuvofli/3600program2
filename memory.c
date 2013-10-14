@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<memory.h>
 //test
-void *mcshMalloc(int bytes, char Memory[], int *position)
+void *nshMalloc(int bytes, char Memory[], int *position)
 {
         int magnitude = 64;
         int start = *position;
@@ -24,7 +24,7 @@ void *mcshMalloc(int bytes, char Memory[], int *position)
 
 }
 
-void*  mcshCalloc(int bytes, char Memory[], int *position)//with the exception of a for loop, this is almost exactly like mschMalloc
+void*  nshCalloc(int bytes, char Memory[], int *position)//with the exception of a for loop, this is almost exactly like mschMalloc
 {
         int magnitude = 64;
         int start = *position;
@@ -51,12 +51,12 @@ void*  mcshCalloc(int bytes, char Memory[], int *position)//with the exception o
            return retval; //starting postion of the allocated block of memory
 }
 
-void mcshRealloc(char memory[], int bytes, char *memPtr)//Copies the block into a larger one, deletes old block
+void nshRealloc(char memory[], int bytes, char *memPtr)//Copies the block into a larger one, deletes old block
 {
 
 }
 
-void mcshFree(char *memptr)//Zeroes a block?
+void nshFree(char *memptr)//Zeroes a block?
 {
   /*  while(*memptr != '\0')
     {

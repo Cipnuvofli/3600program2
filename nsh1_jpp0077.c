@@ -204,7 +204,7 @@ char* envReplace(ENV *evlist, char **Target)//finds an environment variable and 
     else
     {
         printf("A value that didn't start with @ was an argument\n");
-       //nshfree(OverflowSafety);
+       nshFree(OverflowSafety);
         return NULL;
     }
 }
@@ -427,9 +427,9 @@ void commandParser(char *command)
     }
     for(i = 0; i<argCount; i++)
     {
-        //nshfree(Tokens[i]);
+        nshFree(Tokens[i]);
     }
-    //nshfree(Tokens);
+    nshFree(Tokens);
 
 }
 

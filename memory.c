@@ -58,10 +58,11 @@ void nshRealloc(char memory[], int bytes, char *memPtr)//Copies the block into a
 
 void nshFree(char *memptr)//Zeroes a block?
 {
-  /*  while(*memptr != '\0')
+    while(*memptr != '\0')
     {
-        *memptr =
-    }*/
+        *memptr = '\0';
+        memptr++;
+    }
 }
 
 

@@ -183,7 +183,7 @@ void Envdelete(ENV *evlist, char *target)
 }
 char* envReplace(ENV *evlist, char **Target)//finds an environment variable and replaces it with its value in evlist
 {
-    char *OverflowSafety = (char*)nshCalloc(1, strlen(*Target));
+    char *OverflowSafety = (char*)nshCalloc(strlen(*Target), memory, position);
     strcpy(OverflowSafety, *Target+strlen(*Target)+1);
     if (*Target[0] == '@')
     {
@@ -427,7 +427,10 @@ void commandParser(char *command)
     }
     for(i = 0; i<argCount; i++)
     {
-        nshFree(Tokens[i]);
+        if(strcmp(Tokens[i], "exit")!= 0)
+        {
+               nshFree(Tokens[i]);
+        }
     }
     nshFree(Tokens);
 

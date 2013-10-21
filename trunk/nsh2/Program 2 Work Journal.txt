@@ -1,4 +1,4 @@
-Journal for Program 2 (CSCE 3600)
+Joseph Penrod's Journal for Program 2 (CSCE 3600)
 
 10-7-2013
 
@@ -34,3 +34,4 @@ Approximately 11:40PM: Email suggesting I handle memory allocation while Wes han
 10-20-2013
 
 9:00 PM: Began attempting to integrate an environmental variable extension method with Wes's Version of the program
+11:00 PM: Wes and I Decided to go with his approach to environment variable extension over the one I was developing

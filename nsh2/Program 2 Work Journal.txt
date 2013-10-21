@@ -1,0 +1,36 @@
+Journal for Program 2 (CSCE 3600)
+
+10-7-2013
+
+10:00 AM to 10:20 AM: Attempted to Join a group but failed to do so. Stood around awkwardly.
+
+10-10-2013
+
+3:00PM to 4:00 PM: Ironed out Version control issues in a meeting with Wes, compared notes. Agreed to use my code as a baseline. 
+
+Approximately 11:40PM: Email suggesting I handle memory allocation while Wes handles sorting. I agreed.
+
+10-11-2013
+
+10:10 AM: First successful SVN Commit
+
+10:16 AM: Discovery of memory corruption in First Environment Variable push.
+
+10-12-2013
+
+4:20 PM: Discovered source of memory issue in variable pushing process. Discovered memory issue in environment variable extending process
+
+10-13-2013
+
+11:06 PM: Fixed Buffer Overflow error with something of an adhoc solution, but one that looks like it works
+
+10-14-2013
+
+4:30 AM: Began implementing custom memory management system
+5:something AM: Portion of test input working with memory management system
+6:30 AM: Discovered nshFree breaks the exit command due to taking the approach of zeroing the block
+7:11 AM: Bandged over the issue with an if statement
+
+10-20-2013
+
+9:00 PM: Began attempting to integrate an environmental variable extension method with Wes's Version of the program

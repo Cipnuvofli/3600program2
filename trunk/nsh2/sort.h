@@ -148,17 +148,16 @@ else
     extension = strtok(NULL, " !");
     if(extended[0] == '@')//replaces the @signed token with its value
     {
-        char* extendedvalue = (char*) nshMalloc(60);
-        char* removed@sign = (char*) nshMalloc(60);
-        strcpy(removed@sign, extendedvalue[1]);
-        nshFind(list, removed@sign);
+        char* removedatsign = (char*) nshMalloc(60);
+        strcpy(removedatsign, extended[1]);
+        strcpy(recombination, strcat(nshFind(list, removedatsign), extension));
 
     }
     else if(extension[0] == '@')//replaces the @signed token with its value
     {
-        char* extensionvalue = (char*) nshMalloc(60);
-        char* removed@sign = (char*) nshMalloc(60);
-        strcpy(removed@sign, extensionvalue[1]);
+        char* removedatsign = (char*) nshMalloc(60);
+        strcpy(removedatsign, extension[1]);
+        strcpy(recombination, strcat(extended, nshfind(list,removedatsign)));
     }
     while(temp!=NULL)
     {

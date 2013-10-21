@@ -1,3 +1,5 @@
+#ifndef SORT_H
+#define SORT_H
 
 
 //Display function
@@ -113,7 +115,12 @@ void nshDelete(EnvP *list, char* name){
 //
 
 //Update function
-nshUpdate(EnvP *list, char* name, char* value){
+nshUpdate(EnvP *list, char* name, char* value)
+{
+
+if(strchr(value,'@') == NULL)
+{
+
 	EnvP temp;
 	temp = *list;
 	while(temp!=NULL)
@@ -129,6 +136,45 @@ nshUpdate(EnvP *list, char* name, char* value){
 			nshNext(&temp);
 		}
 	}
+}
+else
+{
+    EnvP temp;
+    temp = *list;
+    char* extended = (char*) nshMalloc(60);
+    char* extension = (char*) nshMalloc(60);
+    char* recombination = (char*)nshMalloc(60);
+    extended = strtok(command, " !");
+    extension = strtok(NULL, " !");
+    if(extended[0] == '@')//replaces the @signed token with its value
+    {
+        char* extendedvalue = (char*) nshMalloc(60);
+        char* removed@sign = (char*) nshMalloc(60);
+        strcpy(removed@sign, extendedvalue[1]);
+        nshFind(list, removed@sign);
+
+    }
+    else if(extension[0] == '@')//replaces the @signed token with its value
+    {
+        char* extensionvalue = (char*) nshMalloc(60);
+        char* removed@sign = (char*) nshMalloc(60);
+        strcpy(removed@sign, extensionvalue[1]);
+    }
+    while(temp!=NULL)
+    {
+        if(strcmp(temp->name, name) == 0)
+        {
+            strcpy(temp->value,recombination);
+            break;
+        }
+        else
+        {
+            //temp = temp->next;
+            nshNext(&temp);
+        }
+    }
+
+}
 }
 //
 
@@ -158,3 +204,4 @@ nshNext(EnvP *item){
 	(*item) = (*item)->next;
 }
 //
+#endif // SORT_H

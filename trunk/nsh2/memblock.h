@@ -1,3 +1,6 @@
+#ifndef MEMBLOCK_H
+#define MEMBLOCK_H
+
 //Define size of memory allowed
 #define memsize 10000
 
@@ -10,3 +13,5 @@ typedef struct memBlock *Mblock;
 
 char mem[memsize];
 Mblock Mhead = NULL;
+
+#endif // MEMBLOCK_H

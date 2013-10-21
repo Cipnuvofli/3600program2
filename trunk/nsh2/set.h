@@ -1,3 +1,6 @@
+#ifndef SET_H
+#define SET_H
+
 //Displays, inserts, or updates a new entry
 commandSet(EnvP *list, char* name, char* value){
 	EnvP com,var,temp;
@@ -13,7 +16,7 @@ commandSet(EnvP *list, char* name, char* value){
 		char* pos = strchr(value,'@');
 		temp = nshFind(*list,(pos+1));
 		value = temp->value;
-		printf("test");
+		printf("Variablecheck?\n");
 	}
 
 
@@ -52,3 +55,4 @@ commandSet(EnvP *list, char* name, char* value){
 	//If only the command was sent, display the given list
 	nshDisplay(*list);
 }
+#endif // SET_H

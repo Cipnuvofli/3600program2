@@ -1,3 +1,6 @@
+#ifndef VAR_H
+#define VAR_H
+
 struct env {
 	char name[100];
 	char value[100];
@@ -21,3 +24,4 @@ char first[20];
 char second[20];
 char third[20];
 
+#endif // VAR_H

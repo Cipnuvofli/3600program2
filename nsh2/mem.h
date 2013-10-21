@@ -1,3 +1,7 @@
+#ifndef MEM_H
+#define MEM_H
+
+
 #include "memblock.h"
 
 //Malloc function
@@ -59,7 +63,7 @@ else
 	if(Used >= memsize)
 	{
 		perror("Out of Memory\n");
-		error(0);
+		//error(0);
 		return NULL;
 	}
 
@@ -137,3 +141,4 @@ void* nshRealloc(void* ptr, int s) {
 
 
 }
+#endif // MEM_H

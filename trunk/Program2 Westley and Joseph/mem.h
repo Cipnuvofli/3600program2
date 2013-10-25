@@ -59,7 +59,7 @@ else
 	if(Used >= memsize)
 	{
 		perror("Out of Memory\n");
-		error(0);
+		//error(0);
 		return NULL;
 	}
 

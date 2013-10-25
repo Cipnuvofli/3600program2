@@ -12,7 +12,7 @@ void nshDisplay(EnvP conductor){
 //
 
 //Insert function
-void nshInsert(EnvP *list, char *name, char *value){
+void nshInsert(EnvP *list, char *name, char *value, char *comment){
 //!!!!!!Malloc!!!!!!!!
 	int blocksize = sizeof(struct env);
 	EnvP temp = (EnvP) nshMalloc(sizeof(struct env));
@@ -27,6 +27,10 @@ void nshInsert(EnvP *list, char *name, char *value){
 	left = NULL;
 	strcpy(temp->name,name);
 	strcpy(temp->value,value);
+	if(comment!= '\0')
+    {
+        strcpy(temp->comment, comment);
+    }
 	//Checks to see if list is empty
 	if (right == NULL)
 	{

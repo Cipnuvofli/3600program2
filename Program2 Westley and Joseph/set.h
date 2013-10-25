@@ -1,6 +1,6 @@
 
 //Displays, inserts, or updates a new entry
-commandSet(EnvP *list, char* name, char* value){
+commandSet(EnvP *list, char* name, char* value, char* comment){
 	EnvP com,var,temp;
 	//make sure var name exists
 	if (nshFind(*list,name) != NULL)
@@ -31,11 +31,11 @@ commandSet(EnvP *list, char* name, char* value){
 			if (nshFind(*list,value) != NULL)
 			{
 				var = nshFind(*list,value);
-				nshInsert(list,name,var->value);
+				nshInsert(list,name,var->value, comment);
 			}
 			//If variable doesn't exist, add it
 			else
-				nshInsert(list,name,value);
+				nshInsert(list,name,value, comment);
 			return;
 		}
 		//Makes sure variable name exists and displays an appropriate message

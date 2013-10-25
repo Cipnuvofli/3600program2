@@ -1,7 +1,7 @@
 struct env {
 	char name[100];
 	char value[100];
-
+    char comment[100];
 	struct env *next;
 };
 
@@ -16,8 +16,8 @@ EnvP var,alias,native;
 
 //input strings
 EnvP command;
-char input[60];
+char input[80];
 char first[20];
 char second[20];
 char third[20];
-
+char forth[20];

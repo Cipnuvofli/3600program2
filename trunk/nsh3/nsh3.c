@@ -45,14 +45,14 @@ splitInput(char* input) {
         strtok(input,"\n");
 
         //Create pointer to separate input
-        char *inputSplit = strtok(input, " ");
+        char *inputSplit = strtok(input, " !");
 
         //Make sure there is something for the first argument
         if (inputSplit != NULL)
                 strcpy(first,inputSplit);
 
         //Go to next argument
-        inputSplit = strtok(NULL, " ");
+        inputSplit = strtok(NULL, " !");
 
         //Make sure there is something for the second argument
         if (inputSplit != NULL)
@@ -68,27 +68,13 @@ splitInput(char* input) {
 
 }
 
-//handles all user input
-userInput(){
-	//Clear input fields
-	command = NULL;
-	memset(&input,'\0',sizeof(input));
-	memset(&first,'\0',sizeof(first));
-	memset(&second,'\0',sizeof(second));
-	memset(&third,'\0',sizeof(third));
-	memset(&forth,'\0',sizeof(forth));
-
-	//Take input from user
-	printf("nsh3_WesJos$ ");
-	fgets(input,80,stdin);
-
-
-	splitInput(input);
-
-	//Comment stuff
-	strtok(input, "~");
+char * commentfilter(char *input)
+{
+    strtok(input, "~");
 	char *comment;
 	comment = strtok(NULL, "~");
+
+
 	for(r = 0; r<strlen(first); r++)
     {
         if(first[r] == '~')
@@ -115,6 +101,27 @@ userInput(){
              memset(&third[r], '\0', strlen(third)-r);
         }
     }
+
+}
+
+//handles all user input
+userInput(){
+	//Clear input fields
+	command = NULL;
+	memset(&input,'\0',sizeof(input));
+	memset(&first,'\0',sizeof(first));
+	memset(&second,'\0',sizeof(second));
+	memset(&third,'\0',sizeof(third));
+	memset(&forth,'\0',sizeof(forth));
+
+	//Take input from user
+	printf("nsh3_WesJos$ ");
+	fgets(input,80,stdin);
+
+
+	splitInput(input);
+	commentfilter(input);
+	printf("%s", input);
 
 	//Make sure command or alias exists
 	if ((nshFind(alias,first) == NULL) && (nshFind(native,first) == NULL))

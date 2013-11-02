@@ -54,14 +54,28 @@ nshUse(char* value){
 	EnvP temp;
 
 	//Check for @ to indicate variable usage
-	if(strchr(value,'@') != NULL)
+//	if(strchr(value,'@') != NULL)
+	if(value[0] == '@')
 	{
+
 		//Find position of @ character
 		char* pos = strchr(value,'@');
-		//Find variable that matches
-		temp = nshFind(var,(pos+1));
-		//value becomes the used variable value
-		strcpy(value,temp->value);
+
+		//Check to see if @ is in complex string
+		if (nshComplex(value,strlen(pos)) == 1)
+			return;
+
+		//Make sure variable exists
+		if (nshFind(var,(pos+1)) != NULL)
+		{
+			//Find variable that matches
+			temp = nshFind(var,(pos+1));
+			//value becomes the used variable value
+			strcpy(value,temp->value);
+
+		}
+		//Check to see if value exists but is being extended (ex. value = @one!@two where one and two exist)
+		nshExtend(value);
 	}
 }
 
@@ -74,16 +88,18 @@ nshExtend(char* value){
 	int pos = 0;
 
 	//Create 2 strings to split value and set them to null
-	char f[20];
-	char s[20];
+	char f[40];
+	char s[40];
 	memset(&f,'\0',sizeof(f));
 	memset(&s,'\0',sizeof(s));
 
 	//Find the position of !
 	for(i=0;i<strlen(value);i++)
 	{
-		if (value[i] == '!')
+		//If ! is used and is not in a complex string
+		if (value[i] == '!' && nshComplex(value,i) == 0)
 		{
+
 			pos=i;
 			break;
 		}
@@ -106,11 +122,47 @@ nshExtend(char* value){
 	nshUse(f);
 	nshUse(s);
 
-	//Combine strings
+	//Check for another extends
+	nshExtend(s);
+
+	//Add separator symbol back in
+	strcat(f,"!");
+
+	//Combine the values
 	strcat(f,s);
 
-	//store value as concantinated value
+	//store the processed value
 	strcpy(value,f);
 
 }
 
+int nshComplex(char* var, int pos) {
+	int j,start,end,check;
+	check = 0;
+	//Check to see if complex string is being used
+	if (strchr(var,'{') != NULL && strchr(var,'}') != NULL)
+	{
+		//Find position of start and end of complex symbols
+		for (j=0;j<strlen(var);j++)
+		{
+			if (var[j] == '{' && j < pos)
+				check = 1;
+			if (var[j] == '}' && j < pos)
+			{
+				check = 0;
+			}
+		}
+		//If ! is in a complex string, return true
+		//if (start < pos && end > pos)
+		//	return 1;
+		//Otherwise, return false
+		//else
+			return check;
+	}
+	//If a complex string isn't used at all, return
+	else
+		return 0;
+
+
+
+}

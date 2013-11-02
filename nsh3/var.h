@@ -1,7 +1,6 @@
 struct env {
 	char name[100];
 	char value[100];
-    char comment[100];
 	struct env *next;
 };
 

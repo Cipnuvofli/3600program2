@@ -27,10 +27,6 @@ void nshInsert(EnvP *list, char *name, char *value, char *comment){
 	left = NULL;
 	strcpy(temp->name,name);
 	strcpy(temp->value,value);
-	if(comment!= '\0')
-    {
-        strcpy(temp->comment, comment);
-    }
 	//Checks to see if list is empty
 	if (right == NULL)
 	{

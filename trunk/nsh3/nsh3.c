@@ -7,7 +7,7 @@
 #include "set.h"
 
 int cont = 1;
- int r = 0;//Nullifies stuff after one iteration of comment
+
 
 main() {
 
@@ -70,38 +70,33 @@ splitInput(char* input) {
 
 char * commentfilter(char *input)
 {
-    strtok(input, "~");
-	char *comment;
-	comment = strtok(NULL, "~");
-
-
-	for(r = 0; r<strlen(first); r++)
+    int lbrace = 0; //if a tilde is found
+    int tilde = 0;
+    int rbrace = 0;
+    int r = 0;//iterates over the input
+    for(r =0; r<strlen(input); r++)
     {
-        if(first[r] == '~')
+        if(input[r] == '{')
         {
-            memset(&first[r], '\0', strlen(first)-r);
-            memset(&second[r], '\0', strlen(second)-r);
-            memset(&third[r], '\0', strlen(third)-r);
-            memset(&forth[r], '\0', strlen(forth)-r);
+            lbrace = r;
+        }
+        if(input[r] == '~')
+        {
+            tilde = r;
+        }
+        if(input[r] == '}')
+        {
+            rbrace = r;
         }
     }
-    for(r = 0; r<strlen(second); r++)
+    if(lbrace == 0 && rbrace == 0)
     {
-         if(second[r] == '~')
-        {
-            memset(&second[r], '\0', strlen(second)-r);
-            memset(&third[r], '\0', strlen(third)-r);
-            memset(&forth[r], '\0', strlen(forth)-r);
-        }
+        strtok(input, "~");
     }
-     for(r = 0; r<strlen(third); r++)
+    else if(tilde<lbrace || tilde>rbrace)
     {
-         if(third[r] == '~')
-        {
-             memset(&third[r], '\0', strlen(third)-r);
-        }
+        strtok(input, "~");
     }
-
 }
 
 //handles all user input
@@ -119,9 +114,9 @@ userInput(){
 	fgets(input,80,stdin);
 
 
+    commentfilter(input);//removes the text after a comment but not inside a complex string from a command.
 	splitInput(input);
-	commentfilter(input);
-	printf("%s", input);
+
 
 	//Make sure command or alias exists
 	if ((nshFind(alias,first) == NULL) && (nshFind(native,first) == NULL))

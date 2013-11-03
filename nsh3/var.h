@@ -1,7 +1,7 @@
 struct env {
-	char name[100];
-	char value[100];
-	struct env *next;
+	char name[100];//variable name
+	char value[100];//what the variable equals
+	struct env *next;//a link to the next envvariable
 };
 
 typedef struct env *EnvP;
@@ -16,7 +16,7 @@ EnvP var,alias,native;
 //input strings
 EnvP command;
 char input[80];
-char first[20];
+char first[20];//these arrays are for tokens
 char second[20];
 char third[20];
 char forth[20];

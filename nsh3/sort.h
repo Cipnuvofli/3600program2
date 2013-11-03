@@ -5,15 +5,14 @@ void nshDisplay(EnvP conductor){
 
 	while (conductor != NULL)
 	{
-		printf("\t%s = %s\n", conductor->name,conductor->value);
-		conductor = conductor->next;
+		printf("\t%s = %s\n", conductor->name,conductor->value);//prints the contents of an environment variable in key = value format
+		conductor = conductor->next;//Moves on to the next variable
 	}
 }
 //
 
-//Insert function
+//Insert function(The comment parameter's description is not accurate, and is an artifact of an earlier scheme). This does work though.
 void nshInsert(EnvP *list, char *name, char *value, char *comment){
-//!!!!!!Malloc!!!!!!!!
 	int blocksize = sizeof(struct env);
 	EnvP temp = (EnvP) nshMalloc(sizeof(struct env));
 	if (temp == NULL)
@@ -82,30 +81,28 @@ void nshInsert(EnvP *list, char *name, char *value, char *comment){
 
 //Delete Function
 void nshDelete(EnvP *list, char* name){
-	EnvP temp, prev;
-	temp = *list;
+	EnvP temp, prev;//Prev is the node before temp in the list
+	temp = *list;//The list of variables or aliases being deleted from
 	while(temp!=NULL)
 	{
-		if(strcmp(temp->name,name) == 0)
+		if(strcmp(temp->name,name) == 0)//if the deletion target is found
 		{
-			if(temp==*list)
+			if(temp==*list)//if the deletion target is the head of the list
 			{
-				*list=temp->next;
-//!!!!!!FREE!!!!!!!!
-				nshFree(temp);
+				*list=temp->next;//The head is now the item after the head
+				nshFree(temp);//Free the memory allocated to the former head node
 			}
 			else
 			{
-				prev->next=temp->next;
-//!!!!!!!FREE!!!!!!!!
-				nshFree(temp);
+				prev->next=temp->next;//Make the node prev connects to the node being checked connects to
+				nshFree(temp);//free the memory of the node being checked
 			}
-		break;
+		break;//exit the method
 		}
 		else
 		{
-			prev=temp;
-			nshNext(&temp);
+			prev=temp;//The previous node is the node being checked
+			nshNext(&temp);//Switch nodes
 		}
 	}
 
@@ -115,17 +112,17 @@ void nshDelete(EnvP *list, char* name){
 //Update function
 nshUpdate(EnvP *list, char* name, char* value){
 	EnvP temp;
-	temp = *list;
+	temp = *list;//the list of aliases or environment variables provided as argument
 	while(temp!=NULL)
 	{
-		if(strcmp(temp->name,name) == 0)
+		if(strcmp(temp->name,name) == 0)//If the update target's name is found
 		{
-			strcpy(temp->value,value);
-			break;
+			strcpy(temp->value,value);//set the value of the update target to the value argument
+			break;//exit the method
 		}
 		else
 		{
-			nshNext(&temp);
+			nshNext(&temp);//Go to the next node
 		}
 	}
 }
@@ -135,17 +132,17 @@ nshUpdate(EnvP *list, char* name, char* value){
 void* nshFind(EnvP list, char* name){
 	while(list!=NULL)
 	{
-		if(strcmp(list->name,name) == 0)
+		if(strcmp(list->name,name) == 0)//if the target name is found in the list, return a pointer to it
 			return list;
 		else
-			list=list->next;
+			list=list->next;//go to the next node
 	}
 	return NULL;
 }
 //
 
 
-//Returns head of linked list
+//Returns head of linked list(The way the data structures are organized makes it this simple)
 void* nshHead(EnvP item) {
 	return item;
 }
@@ -154,6 +151,6 @@ void* nshHead(EnvP item) {
 
 //Go to the next item in linked list
 nshNext(EnvP *item){
-	(*item) = (*item)->next;
+	(*item) = (*item)->next;//advance the pointer used internally in a method
 }
 //

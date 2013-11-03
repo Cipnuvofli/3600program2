@@ -1,0 +1,19 @@
+October 24, 2013: Committed a revision to the SVN repository for storing a ocmment on the end of a variable.
+
+11-1-2013
+
+3:00 AM: Started Writing description of how we handled comments for the report
+
+5:00 AM: Moved comment filter into its own function.
+
+11-2-2013
+
+5:00 PM: Simplified Comment Filter method and made it ignore the comment symbol in complex strings.
+
+9:10 PM: Attempted to come up with a solution to the bug of set var {who~}~comment tokenizing at the first tilde. Wes came up with a simpler solution before I could. Updated Comment portion of the report.  
+
+11-3-2013
+
+2:00 AM: Extended level of detail on comments across the board.
+
+4:30 PM: Fixed a bug that nullified the first character when a complex string is included but no comment.

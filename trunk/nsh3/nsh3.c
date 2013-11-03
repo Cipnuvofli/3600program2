@@ -95,9 +95,10 @@ commentfilter(char *input)
 	//Cut the string off at ~ by replacing it with null. This is essentially what strtok does
         input[tilde] = '\0';
     }
-    else if(tilde<lbrace || tilde>rbrace)
+	//Checking again to make sure tilde is used
+    else if((tilde<lbrace || tilde>rbrace) && tilde != 0)
     {
-	//Same thing here
+	//Cut string off at ~
         input[tilde] = '\0';
     }
 

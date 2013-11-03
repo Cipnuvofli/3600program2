@@ -1,12 +1,12 @@
 
-//Displays, inserts, or updates a new entry
+//Displays, inserts, or updates a new entry(The name comment is not accurate, and is an artifact of an earlier shcheme. It works though)
 commandSet(EnvP *list, char* name, char* value, char* comment){
 	EnvP com,var,temp;
 	//make sure var name exists
 	if (nshFind(*list,name) != NULL)
-		com = nshFind(*list,name);
+		com = nshFind(*list,name);//finds command in the list of commands
 	else
-		com = NULL;
+		com = NULL;//nullifies the input
 
 	//Check to see if variable is being extended
 	nshExtend(value);
@@ -85,7 +85,7 @@ nshExtend(char* value){
 
 	EnvP temp;
 	int i;
-	int pos = 0;
+	int pos = 0;//location of the exclamation point
 
 	//Create 2 strings to split value and set them to null
 	char f[40];
@@ -109,7 +109,7 @@ nshExtend(char* value){
 	if (pos == 0)
 		return;
 
-	//split value into 2 arrays
+	//split value into 2 arrays(F is the left side of the exclamation point, s is the right)
 	for(i=0;i<strlen(value);i++)
 	{
 		if(pos > i)
@@ -118,7 +118,7 @@ nshExtend(char* value){
 			s[i-(pos+1)] = value[i];
 	}
 
-	//Check for variable use (@)
+	//Check for variable use on either side of the exclamation mark(@)
 	nshUse(f);
 	nshUse(s);
 
@@ -140,14 +140,14 @@ int nshComplex(char* var, int pos) {
 	int j,start,end,check;
 	check = 0;
 	//Check to see if complex string is being used
-	if (strchr(var,'{') != NULL && strchr(var,'}') != NULL)
+	if (strchr(var,'{') != NULL && strchr(var,'}') != NULL)//If a left and right brace are in the string
 	{
 		//Find position of start and end of complex symbols
 		for (j=0;j<strlen(var);j++)
 		{
-			if (var[j] == '{' && j < pos)
+			if (var[j] == '{' && j < pos)//if a leftbrace occurs before pos, assume a complex string
 				check = 1;
-			if (var[j] == '}' && j < pos)
+			if (var[j] == '}' && j < pos)//unless a rightbrace occurs before pos also
 			{
 				check = 0;
 			}

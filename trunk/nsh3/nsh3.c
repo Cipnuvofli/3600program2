@@ -41,10 +41,26 @@ setNative(){
 }
 
 splitInput(char* input) {
+
+    int lbrace = 0;
+    int rbrace = 0;
+    int i = 0;
+    for(i = 0; i<strlen(input); i++)
+    {
+        if(input[i] == '{')
+        {
+            lbrace = i;
+        }
+        if(input[i] == '}')
+        {
+            rbrace = i;
+        }
+    }
+
 	 //Remove next line character
         strtok(input,"\n");
 
-        //Create pointer to separate input
+        //Create pointer to separate input on space or separator character
         char *inputSplit = strtok(input, " !");
 
         //Make sure there is something for the first argument
@@ -70,9 +86,9 @@ splitInput(char* input) {
 
 commentfilter(char *input)
 {
-    int lbrace = 0; //if a tilde is found
+    int lbrace = 0; //position of left brace
     int tilde = 0;
-    int rbrace = 0;
+    int rbrace = 0;//position of right brace
     int r = 0;//iterates over the input
     for(r =0; r<strlen(input); r++)
     {
@@ -89,14 +105,13 @@ commentfilter(char *input)
             rbrace = r;
         }
     }
-	//Added a check to see if tilde is there.
+	//If there's a tilde and no complex string
     if(lbrace == 0 && rbrace == 0 && tilde != 0)
     {
-	//Cut the string off at ~ by replacing it with null. This is essentially what strtok does
+	//Cut the string off at ~ by replacing it with null.
         input[tilde] = '\0';
     }
-	//Checking again to make sure tilde is used
-    else if((tilde<lbrace || tilde>rbrace) && tilde != 0)
+    else if((tilde<lbrace || tilde>rbrace)&&tilde!=0)//Or the tilde isn't in the complex string
     {
 	//Cut string off at ~
         input[tilde] = '\0';
@@ -120,7 +135,7 @@ userInput(){
 
 
     commentfilter(input);//removes the text after a comment but not inside a complex string from a command.
-	splitInput(input);
+	splitInput(input);//Tokenizes the remaining input into three or less arrays
 
 
 	//Make sure command or alias exists
@@ -143,11 +158,11 @@ userInput(){
 		if ((strcmp(command->value,"alias")==0) || (strcmp(first,"alias") == 0))
 			commandSet(&alias,second,third, forth);
 		if ((strcmp(command->value,"tes") == 0) || (strcmp(first,"tes") == 0))
-			nshDelete(&var,second);
+			nshDelete(&var,second);//deletes the variable with the key of the second token
 		if ((strcmp(command->value,"saila") == 0) || (strcmp(first,"saila") == 0))
-			nshDelete(&alias,second);
+			nshDelete(&alias,second);//deletes the alias with the key of the second token
 		if ((strcmp(command->value,"exit") == 0) || (strcmp(first,"exit") == 0))
-			cont = 0;
+			cont = 0;//makes the program exit
 	}
 
 }

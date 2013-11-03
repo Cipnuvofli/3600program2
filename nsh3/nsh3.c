@@ -68,7 +68,7 @@ splitInput(char* input) {
 
 }
 
-char * commentfilter(char *input)
+commentfilter(char *input)
 {
     int lbrace = 0; //if a tilde is found
     int tilde = 0;
@@ -89,14 +89,18 @@ char * commentfilter(char *input)
             rbrace = r;
         }
     }
-    if(lbrace == 0 && rbrace == 0)
+	//Added a check to see if tilde is there.
+    if(lbrace == 0 && rbrace == 0 && tilde != 0)
     {
-        strtok(input, "~");
+	//Cut the string off at ~ by replacing it with null. This is essentially what strtok does
+        input[tilde] = '\0';
     }
     else if(tilde<lbrace || tilde>rbrace)
     {
-        strtok(input, "~");
+	//Same thing here
+        input[tilde] = '\0';
     }
+
 }
 
 //handles all user input

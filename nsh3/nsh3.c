@@ -6,17 +6,18 @@
 #include "sort.h"
 #include "set.h"
 
+//While loop check
 int cont = 1;
 
 
 main() {
 
 	//fill alias list for display
-	nshInsert(&alias,"set","set", '\0');
-	nshInsert(&alias,"alias","alias",'\0');
-	nshInsert(&alias,"tes","tes",'\0');
-	nshInsert(&alias,"exit","exit",'\0');
-	nshInsert(&alias,"saila","saila",'\0');
+	nshInsert(&alias,"set","set");
+	nshInsert(&alias,"alias","alias");
+	nshInsert(&alias,"tes","tes");
+	nshInsert(&alias,"exit","exit");
+	nshInsert(&alias,"saila","saila");
 
 	//Create native commands
 	setNative();
@@ -32,40 +33,27 @@ main() {
 
 //Set native commands
 setNative(){
-	nshInsert(&native,"set","set",'\0');
-	nshInsert(&native,"tes","tes",'\0');
-	nshInsert(&native,"alias","alias",'\0');
-	nshInsert(&native,"saila","saila",'\0');
-	nshInsert(&native,"exit","exit",'\0');
+	nshInsert(&native,"set","set");
+	nshInsert(&native,"tes","tes");
+	nshInsert(&native,"alias","alias");
+	nshInsert(&native,"saila","saila");
+	nshInsert(&native,"exit","exit");
 
 }
 
+//This function splits the input stream from the user into different strings for processing.
 splitInput(char* input) {
-
-    int lbrace = 0;
-    int rbrace = 0;
-    int i = 0;
-    for(i = 0; i<strlen(input); i++)
-    {
-        if(input[i] == '{')
-        {
-            lbrace = i;
-        }
-        if(input[i] == '}')
-        {
-            rbrace = i;
-        }
-    }
-
 	 //Remove next line character
-        strtok(input,"\n");
+	strtok(input,"\n");
 
-        //Create pointer to separate input on space or separator character
+        //Create pointer to separate input
         char *inputSplit = strtok(input, " !");
 
         //Make sure there is something for the first argument
         if (inputSplit != NULL)
+	{
                 strcpy(first,inputSplit);
+	}
 
         //Go to next argument
         inputSplit = strtok(NULL, " !");
@@ -84,11 +72,12 @@ splitInput(char* input) {
 
 }
 
+//This function nullifies anything following the ~ symbol in the input string.
 commentfilter(char *input)
 {
-    int lbrace = 0; //position of left brace
+    int lbrace = 0; //if a tilde is found
     int tilde = 0;
-    int rbrace = 0;//position of right brace
+    int rbrace = 0;
     int r = 0;//iterates over the input
     for(r =0; r<strlen(input); r++)
     {
@@ -105,13 +94,14 @@ commentfilter(char *input)
             rbrace = r;
         }
     }
-	//If there's a tilde and no complex string
+	//Added a check to see if tilde is there.
     if(lbrace == 0 && rbrace == 0 && tilde != 0)
     {
-	//Cut the string off at ~ by replacing it with null.
+	//Cut the string off at ~ by replacing it with null. This is essentially what strtok does
         input[tilde] = '\0';
     }
-    else if((tilde<lbrace || tilde>rbrace)&&tilde!=0)//Or the tilde isn't in the complex string
+	//Checking again to make sure tilde is used
+    else if((tilde<lbrace || tilde>rbrace) && tilde != 0)
     {
 	//Cut string off at ~
         input[tilde] = '\0';
@@ -127,15 +117,17 @@ userInput(){
 	memset(&first,'\0',sizeof(first));
 	memset(&second,'\0',sizeof(second));
 	memset(&third,'\0',sizeof(third));
-	memset(&forth,'\0',sizeof(forth));
 
 	//Take input from user
 	printf("nsh3_WesJos$ ");
 	fgets(input,80,stdin);
 
 
-    commentfilter(input);//removes the text after a comment but not inside a complex string from a command.
-	splitInput(input);//Tokenizes the remaining input into three or less arrays
+	commentfilter(input);//removes the text after a comment but not inside a complex string from a command.
+
+	//Split the input the user provides
+	splitInput(input);
+
 
 
 	//Make sure command or alias exists
@@ -150,19 +142,45 @@ userInput(){
 		if (nshFind(alias,first) == NULL)
 			command = nshFind(native,first);
 		else
+		{
 			command = nshFind(alias,first);
-
+			handleAlias(command->value);
+		}
 		//Check command
 		if ((strcmp(command->value,"set")==0) || (strcmp(first,"set") == 0))
-			commandSet(&var,second,third,forth);
+			commandSet(&var,second,third);
 		if ((strcmp(command->value,"alias")==0) || (strcmp(first,"alias") == 0))
-			commandSet(&alias,second,third, forth);
+			commandSet(&alias,second,third);
 		if ((strcmp(command->value,"tes") == 0) || (strcmp(first,"tes") == 0))
-			nshDelete(&var,second);//deletes the variable with the key of the second token
+			nshDelete(&var,second);
 		if ((strcmp(command->value,"saila") == 0) || (strcmp(first,"saila") == 0))
-			nshDelete(&alias,second);//deletes the alias with the key of the second token
+			nshDelete(&alias,second);
 		if ((strcmp(command->value,"exit") == 0) || (strcmp(first,"exit") == 0))
-			cont = 0;//makes the program exit
+			cont = 0;
 	}
 
 }
+
+//Checks to see if an alias has a complex string as a value
+handleAlias(char * calias){
+
+	//If alias value leads with complex string symbol, process the function
+	if(calias[0] == '{')
+	{
+		//Removes the leading '{'
+		calias = calias + 1;
+
+		//removes the '}'
+		strtok(calias,"}");
+
+		//Recombine the input to process again. Add spaces where appropriate
+		strcat(calias," ");
+		strcat(calias,second);
+		strcat(calias," ");
+		strcat(calias,third);
+
+		//Process the modified input string
+		splitInput(calias);
+	}
+}
+

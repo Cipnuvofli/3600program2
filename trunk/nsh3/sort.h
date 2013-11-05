@@ -1,4 +1,6 @@
-
+/*
+	Written by Westley Huebner and Joseph Penrod
+*/
 
 //Display function
 void nshDisplay(EnvP conductor){

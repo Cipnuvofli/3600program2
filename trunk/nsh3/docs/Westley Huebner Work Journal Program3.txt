@@ -1,0 +1,60 @@
+---October 21---
+10:20A.M.-10:30A.M.: Split up Program 3 with Joseph. He's implementing comments while I'm implementing complex strings.
+
+---October 27---
+2:20P.M.-2:35P.M.: Looked over Joseph's code for implementing comments. Had a few questions for him before I started modifying his work.
+
+---October 29---
+7:00P.M.-7:15P.M.: Analyze complex string problem and come up with solution. Decided that making a function that checks complex strings before it checks extends.
+
+7:15P.M.-7:30P.M.: Began implementing function for complex strings by concatinating 2 of the input strings.
+
+7:30P.M.: Discoverd issue with current input. Spaces cut off the string when sscanf is used.
+
+7:45P.M.: Decided that separating the input by using tokens could be a solution
+
+8:00P.M.-8:15P.M.: Tested token separation successfully. New change means array pointers are needed instead of fixed arrays.
+
+---October 30---
+10:20A.M.-10:30A.M.: Told Joseph that we needed to change how we accept input. Told him to move his comment implementation to a function in a different file, and to make changes to match our new input method.
+
+---Octover 31---
+8:00P.M.-9:20P.M.: modified program to work with new input method.
+
+11:45P.M.-12:15A.M.: created function to check for complex strings. Decided to check for complex string while extending and referencing variables. Implementation starting in extends function
+
+12:15A.M.-12:20A.M.: Allowed extending function to extend value multiple times
+
+---November 1---
+12:45A.M.-1:15A.M.: Finished complex string check for extends function. Discovered variable use function broke when references unexisting variable
+
+1:15A.M.-1:30A.M.: Fixed using var usage multiple times and implemented complex string checking in var usage function. Discovered a bug that removes the middle complex string when the first is a variable reference
+
+1:30A.M.-2:00A.M.: Discovered that the bug is in the complex string function and occurs if there are mutiple complex strings being processed in the function
+
+10:20A.M.-10:30A.M.: Told Joseph what I did the other night and asked him to finish cleaning up his code by tomorrow. Found out that we were handling extending variables incorectly.
+
+---November 2---
+2:00P.M.-2:30P.M.: Tried to figure out what the program was asking for in regards to multi value variables. Fixed old extends function to not remove the "!" symbol and made comments about where to handle the variable processing whenever we find out more about it.
+
+2:30P.M.-3:00P.M.: I figured out that the extends function should be used to process variable usage if "!" is used. Changed code back to how it was before, but made sure the "!" symbol stays.
+
+3:00P.M.-3:15P.M.: Tested Joseph's code to make sure it works with the rest of the program. I plan on waiting until tomorrow before I add the complex string check to his code.
+
+9:00P.M.-9:10P.M.: Looked over Joseph's code and found a bug when more than one ~ is used.
+
+9:10P.M.-9:20P.M.: Fixed the comment bug.
+
+10:15P.M.-10:30P.M: Found a new bug that I accidentally created when fixing Joseph's bug. Fixed this new bug.
+
+---November 3---
+6:30P.M.-6:35P.M.: Looked at fix Joseph made to comment function. Discovered it was the same fix I had applied the other night to fix the problem.
+
+6:35P.M.-7:00P.M.: Cleaned code up a little bit. Removed the 4th input string we made to store comments since it wasn't needed and wasn't working.
+
+---November 4---
+10:20A.M.-10:30A.M.: Found out that we needed to allow an alias stored as a complex string to be usable when an alias is called
+
+10:45A.M.-12:20P.M.: After having a hard time figuring out how to handle this new functionality with our existing input method, I finally figured out a simple way to handle an alias that is set as a complex string. More details will be in the report.
+
+7:00P.M.-8:00P.M.: Added our names to the code, finished writing the report, and took screenshots of the program.

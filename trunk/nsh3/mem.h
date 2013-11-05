@@ -1,3 +1,7 @@
+/*
+	Written by Westley Huebner and Joseph Penrod
+*/
+
 #include "memblock.h"
 
 //Malloc function

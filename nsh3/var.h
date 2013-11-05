@@ -1,3 +1,7 @@
+/*
+	Written by Westley Huebner and Joseph Penrod
+*/
+
 struct env {
 	char name[100];
 	char value[200];

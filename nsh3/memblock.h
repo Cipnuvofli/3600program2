@@ -1,3 +1,7 @@
+/*
+	Written by Westley Huebner and Joseph Penrod
+*/
+
 //Define size of memory allowed
 #define memsize 10000
 

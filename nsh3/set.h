@@ -1,3 +1,6 @@
+/*
+	Written by Westley Huebner and Joseph Penrod
+*/
 
 //Displays, inserts, or updates a new entry
 commandSet(EnvP *list, char* name, char* value){

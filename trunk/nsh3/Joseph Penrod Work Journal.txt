@@ -17,3 +17,7 @@ October 24, 2013: Committed a revision to the SVN repository for storing a ocmme
 2:00 AM: Extended level of detail on comments across the board.
 
 4:30 PM: Fixed a bug that nullified the first character when a complex string is included but no comment.
+
+11-4-2013
+
+1:00 PM - 6:00 PM: Attempted to break the most recent version of the program. Ended up on a wild goose chase trying to fix a bug that was doing exactly what it was supposed to when I discovered one. 

@@ -31,6 +31,7 @@ main() {
 
 	//Create env var "Path" that stores the home directory
 	setHomeDir();
+	parseResourceFile("C:\\Users\\Owner\\Desktop\\NSH4\\nshrc.txt");//Parses NSHRC File
 
 	//Arguably an uneeded loop, but it keeps the program running.
 	while(cont)
@@ -202,4 +203,53 @@ setHomeDir(){
 	struct passwd *pw = getpwuid(getuid());
 	char *homedir = pw->pw_dir;
 	nshInsert(&var,"Path",homedir);
+}
+
+parseResourceFile(char* FILENAME)
+{
+    FILE *file = fopen(FILENAME, "r");
+    if(file!= NULL)
+    {
+        char line[80];
+        while(fgets(line, 80, file)!=NULL)
+        {
+            commentfilter(line);//removes the text after a comment but not inside a complex string from a command.
+            //Split the input the user provides
+            splitInput(line);
+            //Make sure command or alias exists
+            if ((nshFind(alias,first) == NULL) && (nshFind(native,first) == NULL))
+            {
+                printf("\tCommand not found.\n");
+                userInput();
+            }
+            else
+            {
+                //Checks if alias or native command passed fail test
+                if (nshFind(alias,first) == NULL)
+                    command = nshFind(native,first);
+                else
+                {
+                    command = nshFind(alias,first);
+                    handleAlias(command->value);
+                }
+                //Check command
+                if ((strcmp(command->value,"set")==0) || (strcmp(first,"set") == 0))
+                    commandSet(&var,second,third);
+                if ((strcmp(command->value,"alias")==0) || (strcmp(first,"alias") == 0))
+                    commandSet(&alias,second,third);
+                if ((strcmp(command->value,"tes") == 0) || (strcmp(first,"tes") == 0))
+                    nshDelete(&var,second);
+                if ((strcmp(command->value,"saila") == 0) || (strcmp(first,"saila") == 0))
+                    nshDelete(&alias,second);
+                if ((strcmp(command->value,"exit") == 0) || (strcmp(first,"exit") == 0))
+                    cont = 0;
+            }
+        }
+        fclose(file);
+
+    }
+    else
+    {
+        perror("NSHRC File not found");
+    }
 }

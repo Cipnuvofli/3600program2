@@ -17,7 +17,7 @@
 int cont = 1;
 
 
-main() {
+main(int argc, char *argv[]) {
 
 	//fill alias list for display
 	nshInsert(&alias,"set","set");
@@ -31,7 +31,13 @@ main() {
 
 	//Create env var "Path" that stores the home directory
 	setHomeDir();
-	parseResourceFile("C:\\Users\\Owner\\Desktop\\NSH4\\nshrc.txt");//Parses NSHRC File
+	parseResourceFile("C:\\Users\\Owner\\Desktop\\NSH4\\nshrc.txt", 0);//Parses NSHRC File
+	if(argv[1]!=NULL)
+    {
+        parseResourceFile(argv[1], 1);
+
+    }
+
 
 	//Arguably an uneeded loop, but it keeps the program running.
 	while(cont)
@@ -205,7 +211,7 @@ setHomeDir(){
 	nshInsert(&var,"Path",homedir);
 }
 
-parseResourceFile(char* FILENAME)
+parseResourceFile(char* FILENAME, int argumentfile)
 {
     FILE *file = fopen(FILENAME, "r");
     if(file!= NULL)
@@ -246,6 +252,10 @@ parseResourceFile(char* FILENAME)
             }
         }
         fclose(file);
+        if(argumentfile == 1)
+        {
+            cont = 0;
+        }
 
     }
     else

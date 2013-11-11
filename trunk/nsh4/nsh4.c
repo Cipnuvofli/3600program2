@@ -216,8 +216,8 @@ parseResourceFile(char* FILENAME, int argumentfile)
     FILE *file = fopen(FILENAME, "r");
     if(file!= NULL)
     {
-        char line[80];
-        while(fgets(line, 80, file)!=NULL)
+        char line[80];//same size as the input buffer
+        while(fgets(line, 80, file)!=NULL)//reads the lines from the file
         {
             commentfilter(line);//removes the text after a comment but not inside a complex string from a command.
             //Split the input the user provides
@@ -251,8 +251,8 @@ parseResourceFile(char* FILENAME, int argumentfile)
                     cont = 0;
             }
         }
-        fclose(file);
-        if(argumentfile == 1)
+        fclose(file);//ends the file reading
+        if(argumentfile == 1)//if this is one, that means the filename was used as a command line argument and the program should be exited.
         {
             cont = 0;
         }

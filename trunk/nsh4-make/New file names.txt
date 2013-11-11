@@ -1,0 +1,4 @@
+set.h is now processInput.c
+sort.h is now listFunctions.c
+mem.h is now mem.c
+nshPrep.c contains functions that are executed before the user is allowed to take in input.

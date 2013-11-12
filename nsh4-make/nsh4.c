@@ -30,7 +30,7 @@ int main() {
 
 
 //handles all user input
-userInput(char* input){
+void userInput(char* input){
 	//Clear input fields
 	command = NULL;
 	memset(&first,'\0',sizeof(first));
@@ -71,9 +71,10 @@ userInput(char* input){
 		else
 		{
 			command = nshFind(alias,first);
+			//Checks to see if complex alias is used ({ }). Exits out of
+			//userInput if it's found.
 			if (handleAlias(command->value) == 1)
 				return;
-//			handleAlias(command->value);
 		}
 		//Check command
 		if ((strcmp(command->value,"set")==0) || (strcmp(first,"set") == 0))
@@ -91,16 +92,23 @@ userInput(char* input){
 }
 
 //Checks to see if an alias has a complex string as a value
-handleAlias(char * comalias){
+void handleAlias(char * comalias){
 
 	//If alias value leads with complex string symbol, process the function
 	if(comalias[0] == '{')
 	{
 
-		char* calias = comalias;
-		//Removes the leading '{'
-		calias = calias + 1;
+		//Create array to copy passed value to
+		char calias2[40];
 
+		//Copy value to array
+		strcpy(calias2,comalias);
+
+		//Create pointer for fixed array. This prevents the original value of the parameter from changing
+		char *calias = calias2;
+
+		//Removes the leading '{'
+		strtok(calias,"{");
 		//removes the '}'
 		strtok(calias,"}");
 
@@ -110,17 +118,19 @@ handleAlias(char * comalias){
 		strcat(calias," ");
 		strcat(calias,third);
 
-		userInput(calias);
-		return 1;
 		//Process the modified input string
-//		splitInput(calias);
+		userInput(calias);
+		//If a complex alias is used, return 1
+		return 1;
 	}
+	//If a complex alias is not used, return 0
 	return 0;
 }
 
 
 //This function splits the input stream from the user into different strings for processing.
-splitInput(char* input) {
+void splitInput(char* input) {
+
 	 //Remove next line character
 	strtok(input,"\n");
 
@@ -151,7 +161,7 @@ splitInput(char* input) {
 }
 
 //This function nullifies anything following the ~ symbol in the input string.
-commentfilter(char *input)
+void commentfilter(char *input)
 {
     int lbrace = 0; //if a tilde is found
     int tilde = 0;

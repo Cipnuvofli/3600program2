@@ -27,6 +27,7 @@ setNative(){
 	nshInsert(&native,"tes","tes");
 	nshInsert(&native,"alias","alias");
 	nshInsert(&native,"saila","saila");
+	nshInsert(&native,"echo","echo");
 	nshInsert(&native,"exit","exit");
 
 	//fill alias list for display
@@ -34,6 +35,7 @@ setNative(){
 	nshInsert(&alias,"alias","alias");
 	nshInsert(&alias,"tes","tes");
 	nshInsert(&alias,"exit","exit");
+	nshInsert(&alias,"echo","echo");
 	nshInsert(&alias,"saila","saila");
 
 	//Sets the home directory. Comment out when debugging.

@@ -85,6 +85,8 @@ void userInput(char* input){
 			nshDelete(&var,second);
 		if ((strcmp(command->value,"saila") == 0) || (strcmp(first,"saila") == 0))
 			nshDelete(&alias,second);
+		if ((strcmp(command->value,"echo") == 0) || (strcmp(first,"echo") == 0))
+			nshEcho(first, second, third);
 		if ((strcmp(command->value,"exit") == 0) || (strcmp(first,"exit") == 0))
 			cont = 0;
 	}

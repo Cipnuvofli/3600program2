@@ -37,7 +37,13 @@ void userInput(char* input){
 	memset(&second,'\0',sizeof(second));
 	memset(&third,'\0',sizeof(third));
 
+	//removes the text after a comment but not inside a complex string from a command
+	commentfilter(input);
 
+	if(input[0] == '\n' || input[0] == '\0')
+	{
+		return;
+	}
 
 
 	/*
@@ -50,51 +56,40 @@ void userInput(char* input){
 	if(nshMulti(input) == 1)
 		return;
 
-	commentfilter(input);//removes the text after a comment but not inside a complex string from a command.
-
 	//Split the input the user provides
 	splitInput(input);
 
-
-
-	//Make sure command or alias exists
-	if ((nshFind(alias,first) == NULL) && (nshFind(native,first) == NULL))
+	if(nshFind(alias,first) !=NULL)
 	{
-		printf("\tCommand not found.\n");
-		return;
+		command = nshFind(alias,first);
+		strcpy(first,command->value);
+
+		if(handleAlias(command->value) == 1)
+			return;
+
 	}
-	else
-	{
-		//Checks if alias or native command passed fail test
-		if (nshFind(alias,first) == NULL)
-			command = nshFind(native,first);
-		else
-		{
-			command = nshFind(alias,first);
-			//Checks to see if complex alias is used ({ }). Exits out of
-			//userInput if it's found.
-			if (handleAlias(command->value) == 1)
-				return;
-		}
+
+
 		//Check command
-		if ((strcmp(command->value,"set")==0) || (strcmp(first,"set") == 0))
+		if (strcmp(first,"set") == 0)
 			commandSet(&var,second,third);
-		if ((strcmp(command->value,"alias")==0) || (strcmp(first,"alias") == 0))
+		else if (strcmp(first,"alias") == 0)
 			commandSet(&alias,second,third);
-		if ((strcmp(command->value,"tes") == 0) || (strcmp(first,"tes") == 0))
+		else if (strcmp(first,"tes") == 0)
 			nshDelete(&var,second);
-		if ((strcmp(command->value,"saila") == 0) || (strcmp(first,"saila") == 0))
+		else if (strcmp(first,"saila") == 0)
 			nshDelete(&alias,second);
-		if ((strcmp(command->value,"echo") == 0) || (strcmp(first,"echo") == 0))
-			nshEcho(first, second, third);
-		if ((strcmp(command->value,"exit") == 0) || (strcmp(first,"exit") == 0))
+//		else if ((strcmp(command->value,"echo") == 0) || (strcmp(first,"echo") == 0))
+//			nshEcho(first, second, third);
+		else if (strcmp(first,"exit") == 0)
 			cont = 0;
-	}
+		else
+			printf("\tCommand not found\n");
 
 }
 
 //Checks to see if an alias has a complex string as a value
-void handleAlias(char * comalias){
+int handleAlias(char * comalias){
 
 	//If alias value leads with complex string symbol, process the function
 	if(comalias[0] == '{')
@@ -111,15 +106,28 @@ void handleAlias(char * comalias){
 
 		//Removes the leading '{'
 		strtok(calias,"{");
+
+		calias = calias + 1;
 		//removes the '}'
 		strtok(calias,"}");
 
 		//Recombine the input to process again. Add spaces where appropriate
-		strcat(calias," ");
-		strcat(calias,second);
-		strcat(calias," ");
-		strcat(calias,third);
 
+		if(second[0] != '\0')
+		{
+			strcat(calias," ");
+			strcat(calias,second);
+		}
+		if(third[0] != '\0')
+		{
+			strcat(calias," ");
+			strcat(calias,third);
+		}
+//		commentfilter(input);
+//		if (nshMulti(input) == 1)
+//			return;
+
+//		splitInput(input);
 		//Process the modified input string
 		userInput(calias);
 		//If a complex alias is used, return 1
@@ -137,7 +145,7 @@ void splitInput(char* input) {
 	strtok(input,"\n");
 
         //Create pointer to separate input
-        char *inputSplit = strtok(input, " !");
+        char *inputSplit = strtok(input, " ");
 
         //Make sure there is something for the first argument
         if (inputSplit != NULL)
@@ -146,7 +154,7 @@ void splitInput(char* input) {
 	}
 
         //Go to next argument
-        inputSplit = strtok(NULL, " !");
+        inputSplit = strtok(NULL, " ");
 
         //Make sure there is something for the second argument
         if (inputSplit != NULL)
@@ -165,8 +173,10 @@ void splitInput(char* input) {
 //This function nullifies anything following the ~ symbol in the input string.
 void commentfilter(char *input)
 {
-    int lbrace = 0; //if a tilde is found
+    int lbrace = 0;
     int tilde = 0;
+    //Check to see if tilde is present
+    int check = 0;
     int rbrace = 0;
     int r = 0;//iterates over the input
     for(r =0; r<strlen(input); r++)
@@ -178,6 +188,7 @@ void commentfilter(char *input)
         if(input[r] == '~')
         {
             tilde = r;
+	    check = 1;
         }
         if(input[r] == '}')
         {
@@ -185,7 +196,7 @@ void commentfilter(char *input)
         }
     }
 	//Added a check to see if tilde is there.
-    if(lbrace == 0 && rbrace == 0 && tilde != 0)
+    if(lbrace == 0 && rbrace == 0 && check == 1)
     {
 	//Cut the string off at ~ by replacing it with null. This is essentially what strtok does
         input[tilde] = '\0';

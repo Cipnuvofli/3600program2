@@ -11,11 +11,15 @@
 int cont = 1;
 
 
-int main() {
+int main(int argc, char *argv[]) {
 
 	//Create native commands
 	setNative();
-
+	//parseResourceFile("PathofFile",0);
+    if(argv[1]!= NULL)
+    {
+        parseResourceFile(argv[1],1);
+    }
 	//Continues while cont = 1. To close the program, set cont to 0.
 	while(cont)
 	{
@@ -209,4 +213,60 @@ void commentfilter(char *input)
     }
 
 }
+parseResourceFile(char* FILENAME, int argumentfile)
+{
+    FILE *file = fopen(FILENAME, "r");
+    if(file!= NULL)
+    {
+        char line[80];//same size as the input buffer
+        while(fgets(line, 80, file)!=NULL)//reads the lines from the file
+        {
+            commentfilter(line);//removes the text after a comment but not inside a complex string from a command.
+            //Split the input the user provides
+            splitInput(line);
+            //Make sure command or alias exists
+            if ((nshFind(alias,first) == NULL) && (nshFind(native,first) == NULL))
+            {
+                printf("\tCommand not found.\n");
+                userInput(line);
+            }
+            else
+            {
+                //Checks if alias or native command passed fail test
+                if (nshFind(alias,first) == NULL)
+                    command = nshFind(native,first);
+                else
+                {
+                    command = nshFind(alias,first);
+                    handleAlias(command->value);
+                }
+                //Check command
+                if ((strcmp(command->value,"set")==0) || (strcmp(first,"set") == 0))
+                    commandSet(&var,second,third);
+                if ((strcmp(command->value,"alias")==0) || (strcmp(first,"alias") == 0))
+                    commandSet(&alias,second,third);
+                if ((strcmp(command->value,"tes") == 0) || (strcmp(first,"tes") == 0))
+                    nshDelete(&var,second);
+                if ((strcmp(command->value,"saila") == 0) || (strcmp(first,"saila") == 0))
+                    nshDelete(&alias,second);
+                if ((strcmp(command->value,"exit") == 0) || (strcmp(first,"exit") == 0))
+                    cont = 0;
+            }
+            memset(line, '\0', 80);
+            memset(first, '\0', 20);
+            memset(second, '\0', 20);
+            memset(third, '\0', 40);
 
+        }
+        fclose(file);//ends the file reading
+        if(argumentfile == 1)//if this is one, that means the filename was used as a command line argument and the program should be exited.
+        {
+            cont = 0;
+        }
+
+    }
+    else
+    {
+        perror("NSHRC File not found");
+    }
+}

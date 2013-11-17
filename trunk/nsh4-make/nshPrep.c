@@ -1,3 +1,12 @@
+/*
+	Written by:
+	Westley Huebner
+	Joseph Penrod
+	Tyler Clements
+*/
+
+
+
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/types.h>
@@ -15,11 +24,11 @@ but for some reason it doesn't let the gdb run.
 Returns the home directory.
 This code was taken from the Program4 description
 */
-char* setHomeDir(){
-	struct passwd *pw = getpwuid(getuid());
-	char* homedir = pw->pw_dir;
-	return homedir;
-}
+//char* setHomeDir(){
+//	struct passwd *pw = getpwuid(getuid());
+//	char* homedir = pw->pw_dir;
+//	return homedir;
+//}
 
 //Set native commands
 setNative(){
@@ -39,7 +48,7 @@ setNative(){
 	nshInsert(&alias,"saila","saila");
 
 	//Sets the home directory. Comment out when debugging.
-	nshInsert(&var,"Path",setHomeDir());
+//	nshInsert(&var,"Path",setHomeDir());
 
 }
 

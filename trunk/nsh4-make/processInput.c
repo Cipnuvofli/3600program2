@@ -1,5 +1,8 @@
 /*
-	Written by Westley Huebner and Joseph Penrod
+	Written by
+	Westley Huebner
+	Joseph Penrod
+	Tyler Clements
 */
 #include <stdio.h>
 #include "var.h"

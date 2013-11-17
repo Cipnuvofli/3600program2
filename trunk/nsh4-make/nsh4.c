@@ -1,5 +1,8 @@
 /*
-	Written by Westley Huebner and Joseph Penrod
+	Written by
+	Westley Huebner
+	Joseph Penrod
+	Tyler Clements
 */
 
 #include <stdio.h>
@@ -15,11 +18,16 @@ int main(int argc, char *argv[]) {
 
 	//Create native commands
 	setNative();
-	//parseResourceFile("PathofFile",0);
-    if(argv[1]!= NULL)
-    {
-        parseResourceFile(argv[1],1);
-    }
+
+	//Run nshrc.txt if it exists
+	parseResourceFile("nshrc.txt",0);
+
+	//Check to see if a file was used as an argument
+	if(argv[1]!= NULL)
+	{
+        	parseResourceFile(argv[1],1);
+    	}
+
 	//Continues while cont = 1. To close the program, set cont to 0.
 	while(cont)
 	{
@@ -117,26 +125,27 @@ int handleAlias(char * comalias){
 
 		//Recombine the input to process again. Add spaces where appropriate
 
+		//Check to see if a second argument was used
 		if(second[0] != '\0')
 		{
 			strcat(calias," ");
 			strcat(calias,second);
 		}
+
+		//Checl to see if a third argument was used
 		if(third[0] != '\0')
 		{
 			strcat(calias," ");
 			strcat(calias,third);
 		}
-//		commentfilter(input);
-//		if (nshMulti(input) == 1)
-//			return;
 
-//		splitInput(input);
 		//Process the modified input string
 		userInput(calias);
+
 		//If a complex alias is used, return 1
 		return 1;
 	}
+
 	//If a complex alias is not used, return 0
 	return 0;
 }
@@ -213,6 +222,11 @@ void commentfilter(char *input)
     }
 
 }
+
+/*
+Process a file if one is used as an argument when
+the program is run or if nshrc.txt exists.
+*/
 parseResourceFile(char* FILENAME, int argumentfile)
 {
     FILE *file = fopen(FILENAME, "r");
@@ -221,41 +235,15 @@ parseResourceFile(char* FILENAME, int argumentfile)
         char line[80];//same size as the input buffer
         while(fgets(line, 80, file)!=NULL)//reads the lines from the file
         {
-            commentfilter(line);//removes the text after a comment but not inside a complex string from a command.
-            //Split the input the user provides
-            splitInput(line);
-            //Make sure command or alias exists
-            if ((nshFind(alias,first) == NULL) && (nshFind(native,first) == NULL))
-            {
-                printf("\tCommand not found.\n");
-                userInput(line);
-            }
-            else
-            {
-                //Checks if alias or native command passed fail test
-                if (nshFind(alias,first) == NULL)
-                    command = nshFind(native,first);
-                else
-                {
-                    command = nshFind(alias,first);
-                    handleAlias(command->value);
-                }
-                //Check command
-                if ((strcmp(command->value,"set")==0) || (strcmp(first,"set") == 0))
-                    commandSet(&var,second,third);
-                if ((strcmp(command->value,"alias")==0) || (strcmp(first,"alias") == 0))
-                    commandSet(&alias,second,third);
-                if ((strcmp(command->value,"tes") == 0) || (strcmp(first,"tes") == 0))
-                    nshDelete(&var,second);
-                if ((strcmp(command->value,"saila") == 0) || (strcmp(first,"saila") == 0))
-                    nshDelete(&alias,second);
-                if ((strcmp(command->value,"exit") == 0) || (strcmp(first,"exit") == 0))
-                    cont = 0;
-            }
-            memset(line, '\0', 80);
-            memset(first, '\0', 20);
-            memset(second, '\0', 20);
-            memset(third, '\0', 40);
+
+		//Process the line retrieved from the file as input
+		userInput(line);
+
+		//Reset the line for the next command
+		memset(line, '\0', 80);
+
+
+
 
         }
         fclose(file);//ends the file reading

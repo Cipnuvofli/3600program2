@@ -209,46 +209,183 @@ int nshMulti(char* input){
 
 void nshEcho(char* first, char* second, char* third) {
 
-	int i;
+	int i,j,k,l,m;
+
+	int boolThird[2] = {0,0};
+	int boolFourth[2] = {0,0};
+	int boolFifth[2] = {0,0};
+
 	char* token;
 
-	//Iterate through second partition for symbols
-	for(i=0; i< strlen(second); i++) {
+	char fullString[120];
 
-		//Searching for @ symbol in second string
-		if(second[i] == '@') {
-			if(i == 0) {
-				nshUse(second);
-				printf("%s\n",second );
+	//These are needed to make the preexisting functions
+	//work (i.e. nshUse, etc.). I made 5 parts just to 
+	//be sure that the input won't break.
+	char tempFirst[20];
+	char tempSecond[20];
+	char tempThird[20];
+	char tempFourth[20];
+	char tempFifth[20];
+
+	//Combining inputs for better processing, also
+	//temporarily partitioning in the process
+	for(i=0; i < strlen(first); i++) {
+		fullString[i] = first[i];
+		tempFirst[i] = first[i];
+	}
+
+	fullString[i] = ' ';
+	i++;
+
+	for(j=0; j < strlen(second); j++) {
+		fullString[i] = second[j];
+		tempSecond[j] = second[j];
+		i++;
+	}
+
+	fullString[i] = ' ';
+	i++;
+
+	l=0;
+	m=0;
+	for(k=0; k < strlen(third); k++) {
+
+		fullString[i] = third[k];
+		
+		//This is partitioning the third input into separate
+		//strings based on the space character. This will
+		//allow the premade functions to work properly. The
+		//boolThird[1], for example, is a flag saying if it's
+		//been used, skip it, so it won't be overwritten. The
+		//boolThird[0], for example, is a flag saying if it's
+		//the active partition being written to (only one
+		//partition should be active at a time with this 
+		//checking method).
+		if(third[k] == ' ') {
+			if(boolThird[1] == 0) {
+				boolThird[0] = 1;
+			}
+
+			m++;
+		}
+		if(boolThird[0] == 1) {
+			if( (third[k] == ' ') && (m == 2) ) {
+				boolThird[0] = 0;
+				boolThird[1] = 1;
+				l = 0;
+
+				boolFourth[0] = 1;
+			}
+
+			else {
+				tempThird[l] = third[k];
+				l++;
 			}
 		}
+		if(boolFourth[0] == 1) {
+			if( (third[k] == ' ') && (m == 3) ) {
+				boolFourth[0] = 0;
+				boolFourth[1] = 1;
+				l = 0;
+
+				boolFifth[0] = 1;
+			}
+			else {
+				tempFourth[l] = third[k];
+				l++;
+			}
+		}
+		if(boolFifth[0] == 1) {
+			if( (third[k] == ' ') && (m == 4) ) {
+				boolFifth[0] = 0;
+				boolFifth[1] = 1;
+				l = 0;
+
+				printf("Error. Line Length has been exceeded.\n");
+				break;
+			}
+			else {
+				tempFifth[l] = third[k];
+				l++;
+			}
+		}
+
+		i++;
+	}
+
+	//Iterate through input for symbols
+	for(i=0; i< strlen(tempSecond); i++) {
+
+		//Searching for @ symbol in second string
+		if(tempSecond[i] == '@') {
+			nshUse(tempSecond);
+			printf("%s\n",tempSecond );
+		}
 		//Searching for ? symbol in second string
-		if(second[i] == '?') {
-			printf("The command contains a \'?\'.\n");
+		if(tempSecond[i] == '?') {
+			nshMulti(tempSecond);
 		}
 		//Searching for $ symbol in second string
-		if(second[i] == '$') {
-			nshLineEx(first, second, third);
-		//	printf("%s %s\n", second, third);
+		if(tempSecond[i] == '$') {
+			nshLineEx(tempSecond);
 		}
 		
 	}
+	for(i=0; i< strlen(tempThird); i++) {
 
-	//Iterate through third partition for symbols
-	for(i=0; i < strlen(third); i++) {
-		//Searching for Symbols in third string
-		if(third[i] == '@') {
-			nshUse(third);
-			printf("%s\n",third);
+		//Searching for @ symbol in second string
+		if(tempSecond[i] == '@') {
+			nshUse(tempThird);
+			printf("%s\n",tempThird);
 		}
-		if(third[i] == '$') {
-			nshLineEx(first, second, third);
-		//	printf("%s %s\n", second, third);
+		//Searching for ? symbol in second string
+		if(tempThird[i] == '?') {
+			nshMulti(tempThird);
 		}
+		//Searching for $ symbol in second string
+		if(tempThird[i] == '$') {
+			nshLineEx(tempThird);
+		}
+		
+	}
+	for(i=0; i< strlen(tempFourth); i++) {
+
+		//Searching for @ symbol in second string
+		if(tempFourth[i] == '@') {
+			nshUse(tempFourth);
+			printf("%s\n",tempFourth );
+		}
+		//Searching for ? symbol in second string
+		if(tempFourth[i] == '?') {
+			nshMulti(tempFourth);
+		}
+		//Searching for $ symbol in second string
+		if(tempFourth[i] == '$') {
+			nshLineEx(tempFourth);
+		}
+		
+	}
+	for(i=0; i< strlen(tempFifth); i++) {
+
+		//Searching for @ symbol in second string
+		if(tempFifth[i] == '@') {
+			nshUse(tempFifth);
+			printf("%s\n",tempFifth );
+		}
+		//Searching for ? symbol in second string
+		if(tempFifth[i] == '?') {
+			nshMulti(tempFifth);
+		}
+		//Searching for $ symbol in second string
+		if(tempFifth[i] == '$') {
+			nshLineEx(tempFifth);
+		}
+		
 	}
 }
 
-void nshLineEx(char* first, char* second, char* third) {
+void nshLineEx(char* lineOne) {
 	
 	//Just a counter variable
 	int i;
@@ -256,15 +393,17 @@ void nshLineEx(char* first, char* second, char* third) {
 	//Search first partition for '$'. Shouldn't be one here,
 	//but it's searching just in case.(We all know how
 	//users are)
-	for(i=0; i < strlen(first); i++) {
+	for(i=0; i < strlen(lineOne); i++) {
 
-		if(first[i] == '$') {
-			first[i] = '\0';
+		if(lineOne[i] == '$') {
+			lineOne[i] = '\0';
 			printf("\t\t");
 			fgets(second,20,stdin);
-			printf("%s %s\n", first, second);
+			printf("%s %s\n", lineOne, second);
 		}
 	}
+
+/*
 	//Searching second partition for '$'
 	for(i=0; i < strlen(second); i++) {
 
@@ -285,4 +424,6 @@ void nshLineEx(char* first, char* second, char* third) {
 			printf("\n%s %s", second, third);
 		}
 	}
+*/
+
 }

@@ -265,7 +265,7 @@ void nshEcho(char* second, char*third){
 
 	//Variables for checking individual words.
 	char *temp;
-	char output[80];
+	char output[200];
 
 	//get the first word of the input
 	strtok(second," ");

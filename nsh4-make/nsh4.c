@@ -52,10 +52,14 @@ void userInput(char* input){
 	//removes the text after a comment but not inside a complex string from a command
 	commentfilter(input);
 
+	//Check if input is null.
 	if(input[0] == '\n' || input[0] == '\0')
 	{
 		return;
 	}
+
+	//Process line extension ($)
+	lineExtension(input);
 
 
 	/*
@@ -91,8 +95,8 @@ void userInput(char* input){
 			nshDelete(&var,second);
 		else if (strcmp(first,"saila") == 0)
 			nshDelete(&alias,second);
-//		else if ((strcmp(command->value,"echo") == 0) || (strcmp(first,"echo") == 0))
-//			nshEcho(first, second, third);
+		else if (strcmp(first,"echo") == 0)
+			nshEcho(second, third);
 		else if (strcmp(first,"exit") == 0)
 			cont = 0;
 		else

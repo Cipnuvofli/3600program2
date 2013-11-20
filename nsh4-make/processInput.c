@@ -210,3 +210,90 @@ int nshMulti(char* input){
 	return 1;
 }
 
+//Line extension
+void lineExtension(char* input){
+
+	//Check if line extension is used or if it is used outside of a complex string
+	if (strchr(input,'$') == NULL || nshComplex(input,'$') == 1)
+		return;
+
+	//variable for for loop. Used to find the position of $
+	int i;
+
+	//Find where line extension is used ($). Start at the end of the string and work back
+	for(i=strlen(input);0<i;i--)
+	{
+		//If there are spaces or things we don't need, skip them.
+		if(input[i] == '\n' || input[i] == ' ')
+			continue;
+		//When $ is found, exit the loop
+		if(input[i] == '$')
+			break;
+	}
+
+	//Make sure the loop found the $
+	if (input[i] == '$')
+	{
+		//Cut off everything after the $.
+		input[i] = '\0';
+
+		//Used to store the extended input
+		char extend[80];
+
+		//Get extra input from user
+		printf("\t\t-> ");
+		fgets(extend,80,stdin);
+
+		//Check for comments
+		commentfilter(extend);
+
+		//Combine the old input with the new input
+		strcat(input,extend);
+
+		//Check for more line extensions
+		lineExtension(input);
+	}
+}
+
+//Process the echo command
+void nshEcho(char* second, char*third){
+
+
+	//Combine second and third input into 1 string. Add a space betwen the 2 as well.
+	strcat(second," ");
+	strcat(second,third);
+
+	//Variables for checking individual words.
+	char *temp;
+	char output[80];
+
+	//get the first word of the input
+	strtok(second," ");
+
+	//check to see if there is variable usage
+	nshUse(second);
+
+	//Combine the word with the output string and add a space at the end
+	strcat(output,second);
+	strcat(output," ");
+
+	//get the next word
+	temp = strtok(NULL," ");
+
+	//While there are still words to process...
+	while(temp != NULL)
+	{
+		//Check for variable usage
+		nshUse(temp);
+		//combine the word with the output
+		strcat(output,temp);
+		//Since variable usage adds a space, check to see if adding a space is necessary
+		if(temp[strlen(temp)-1] != ' ')
+			strcat(output," ");
+
+		//get the next word
+		temp =strtok(NULL," ");
+	}
+	//Output the processed string
+	printf("\t%s\n",output);
+}

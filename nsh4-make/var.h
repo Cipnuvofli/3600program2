@@ -24,5 +24,5 @@ EnvP var,alias,native;
 EnvP command;
 char input[80];
 char first[20];
-char second[20];
-char third[40];
+char second[120];
+char third[120];

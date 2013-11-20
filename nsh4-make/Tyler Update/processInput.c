@@ -13,19 +13,20 @@ commandSet(EnvP *list, char* name, char* value){
 		com = nshFind(*list,name);
 	else
 		com = NULL;
-		
+
 	for(i=0; i<strlen(value); i++) {
 		if(value[i] == '$') {
-			nshLineEx(value);
+			nshLineEx(name,value);
 		}
 	}
-
 	//Check to see if variable is being extended
 	nshExtend(value);
 
 	//Chec to see if variable is being used
 	nshUse(value);
-
+	
+	
+	
 	//If a name has been recieved, check to either display or set
 	if (name[0] != '\0')
 	{
@@ -50,13 +51,17 @@ commandSet(EnvP *list, char* name, char* value){
 				nshInsert(list,name,value);
 			return;
 		}
+		
 		//Makes sure variable name exists and displays an appropriate message
 		if (com->name == NULL)
 			printf("\tInvalid variable or alias\n");
 		else
 			printf("\t%s = %s\n",com->name,com->value);
+			
+		
 		return;
 	}
+	
 	//If only the command was sent, display the given list
 	nshDisplay(*list);
 }
@@ -259,152 +264,92 @@ void nshEcho(char* first, char* second, char* third) {
 	for(k=0; k < strlen(third); k++) {
 
 		fullString[i] = third[k];
-		
-		//This is partitioning the third input into separate
-		//strings based on the space character. This will
-		//allow the premade functions to work properly. The
-		//boolThird[1], for example, is a flag saying if it's
-		//been used, skip it, so it won't be overwritten. The
-		//boolThird[0], for example, is a flag saying if it's
-		//the active partition being written to (only one
-		//partition should be active at a time with this 
-		//checking method).
-		if(third[k] == ' ') {
-			if(boolThird[1] == 0) {
-				boolThird[0] = 1;
-			}
-
-			m++;
-		}
-		if(boolThird[0] == 1) {
-			if( (third[k] == ' ') && (m == 2) ) {
-				boolThird[0] = 0;
-				boolThird[1] = 1;
-				l = 0;
-
-				boolFourth[0] = 1;
-			}
-
-			else {
-				tempThird[l] = third[k];
-				l++;
-			}
-		}
-		if(boolFourth[0] == 1) {
-			if( (third[k] == ' ') && (m == 3) ) {
-				boolFourth[0] = 0;
-				boolFourth[1] = 1;
-				l = 0;
-
-				boolFifth[0] = 1;
-			}
-			else {
-				tempFourth[l] = third[k];
-				l++;
-			}
-		}
-		if(boolFifth[0] == 1) {
-			if( (third[k] == ' ') && (m == 4) ) {
-				boolFifth[0] = 0;
-				boolFifth[1] = 1;
-				l = 0;
-
-				printf("Error. Line Length has been exceeded.\n");
-				break;
-			}
-			else {
-				tempFifth[l] = third[k];
-				l++;
-			}
-		}
-
 		i++;
 	}
 
 	//Iterate through input for symbols
-	for(i=0; i< strlen(tempSecond); i++) {
+	for(i=0; i< strlen(first); i++) {
 
 		//Searching for @ symbol in second string
-		if(tempSecond[i] == '@') {
-			nshUse(tempSecond);
-			printf("%s\n",tempSecond );
+		if(first[i] == '@') {
+			nshUse(first);
+			printf("%s\n",first );
 		}
 		//Searching for ? symbol in second string
-		if(tempSecond[i] == '?') {
-			nshMulti(tempSecond);
+		if(first[i] == '?') {
+			nshMulti(first);
 		}
 		//Searching for $ symbol in second string
-		if(tempSecond[i] == '$') {
-		//	nshLineEx(tempSecond);
+		if(first[i] == '$') {
+			nshLineEx(first, second);
 		}
 		
 	}
-	for(i=0; i< strlen(tempThird); i++) {
+	for(i=0; i< strlen(second); i++) {
 
 		//Searching for @ symbol in second string
-		if(tempSecond[i] == '@') {
-			nshUse(tempThird);
-			printf("%s\n",tempThird);
+		if(second[i] == '@') {
+			nshUse(second);
+			printf("%s\n",second);
 		}
 		//Searching for ? symbol in second string
-		if(tempThird[i] == '?') {
-			nshMulti(tempThird);
+		if(second[i] == '?') {
+			nshMulti(second);
 		}
 		//Searching for $ symbol in second string
-		if(tempThird[i] == '$') {
-		//	nshLineEx(tempThird);
-		}
-		
-	}
-	for(i=0; i< strlen(tempFourth); i++) {
-
-		//Searching for @ symbol in second string
-		if(tempFourth[i] == '@') {
-			nshUse(tempFourth);
-			printf("%s\n",tempFourth );
-		}
-		//Searching for ? symbol in second string
-		if(tempFourth[i] == '?') {
-			nshMulti(tempFourth);
-		}
-		//Searching for $ symbol in second string
-		if(tempFourth[i] == '$') {
-		//	nshLineEx(tempFourth);
-		}
-		
-	}
-	for(i=0; i< strlen(tempFifth); i++) {
-
-		//Searching for @ symbol in second string
-		if(tempFifth[i] == '@') {
-			nshUse(tempFifth);
-			printf("%s\n",tempFifth );
-		}
-		//Searching for ? symbol in second string
-		if(tempFifth[i] == '?') {
-			nshMulti(tempFifth);
-		}
-		//Searching for $ symbol in second string
-		if(tempFifth[i] == '$') {
-		//	nshLineEx(tempFifth);
+		if(second[i] == '$') {
+			nshLineEx(first,second);
 		}
 		
 	}
 
-	printf("\n%s\n\n", fullString);
+	i=strlen(fullString);
+	for(k=0; k < strlen(third); k++) {
+
+		fullString[i] = third[k];
+		i++;
+	}
+	
+	printf("%s\n\n", fullString);
 }
 
 //Extends the line and resets the third input
-void nshLineEx(char* value) {
+void nshLineEx(char* name,char* value) {
 	
 	//Just a counter variable
-	int i;
+	int i,j;
 	char temp[20];
+	char temp2[20];
 	
 	printf("\t\t>");
 	fgets(temp,20,stdin);
 	
-	for(i=0; i<strlen(temp); i++) {
-		third[i]=temp[i];
+	j=0;
+
+	j=0;
+	i=(strlen(value))-1;
+	for(i; i<strlen(temp); i++) {
+		third[i]=temp[j];
+		j++;
+	}
+	
+	j=(strlen(value))-1;
+	for(i=0; i<strlen(third); i++) {
+		value[j] = third[i];
+	}
+	
+	for(i=0; i<strlen(name); i++) {
+		temp2[i]=name[i];
+	}
+	i=0;
+	for(j=0; j<strlen(temp); j++) {
+		temp2[i]=temp[j];
+		i++;
+	}
+	
+	for(i=0; i<strlen(temp2); i++) {
+		if(value[i] == '?') {	
+			nshMulti(temp2);
+		}
 	}
 }

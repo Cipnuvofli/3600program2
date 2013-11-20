@@ -7,11 +7,18 @@
 //Displays, inserts, or updates a new entry
 commandSet(EnvP *list, char* name, char* value){
 	EnvP com,var,temp;
+	int i;
 	//make sure var name exists
 	if (nshFind(*list,name) != NULL)
 		com = nshFind(*list,name);
 	else
 		com = NULL;
+		
+	for(i=0; i<strlen(value); i++) {
+		if(value[i] == '$') {
+			nshLineEx(value);
+		}
+	}
 
 	//Check to see if variable is being extended
 	nshExtend(value);
@@ -328,7 +335,7 @@ void nshEcho(char* first, char* second, char* third) {
 		}
 		//Searching for $ symbol in second string
 		if(tempSecond[i] == '$') {
-			nshLineEx(tempSecond);
+		//	nshLineEx(tempSecond);
 		}
 		
 	}
@@ -345,7 +352,7 @@ void nshEcho(char* first, char* second, char* third) {
 		}
 		//Searching for $ symbol in second string
 		if(tempThird[i] == '$') {
-			nshLineEx(tempThird);
+		//	nshLineEx(tempThird);
 		}
 		
 	}
@@ -362,7 +369,7 @@ void nshEcho(char* first, char* second, char* third) {
 		}
 		//Searching for $ symbol in second string
 		if(tempFourth[i] == '$') {
-			nshLineEx(tempFourth);
+		//	nshLineEx(tempFourth);
 		}
 		
 	}
@@ -379,51 +386,25 @@ void nshEcho(char* first, char* second, char* third) {
 		}
 		//Searching for $ symbol in second string
 		if(tempFifth[i] == '$') {
-			nshLineEx(tempFifth);
+		//	nshLineEx(tempFifth);
 		}
 		
 	}
+
+	printf("\n%s\n\n", fullString);
 }
 
-void nshLineEx(char* lineOne) {
+//Extends the line and resets the third input
+void nshLineEx(char* value) {
 	
 	//Just a counter variable
 	int i;
-
-	//Search first partition for '$'. Shouldn't be one here,
-	//but it's searching just in case.(We all know how
-	//users are)
-	for(i=0; i < strlen(lineOne); i++) {
-
-		if(lineOne[i] == '$') {
-			lineOne[i] = '\0';
-			printf("\t\t");
-			fgets(second,20,stdin);
-			printf("%s %s\n", lineOne, second);
-		}
-	}
-
-/*
-	//Searching second partition for '$'
-	for(i=0; i < strlen(second); i++) {
-
-		if(second[i] == '$') {
-			second[i] = '\0';
-			printf("\t\t");
-			fgets(third,40,stdin);
-			printf("\n%s %s", second, third);
-		}
-	}
-	//Searching third partition for '$'
-	for(i=0; i < strlen(third); i++) {
+	char temp[20];
 	
-		if(third[i] == '$') {
-			third[i] = '\0';
-			printf("\t\t");
-			fgets(third,40,stdin);
-			printf("\n%s %s", second, third);
-		}
+	printf("\t\t>");
+	fgets(temp,20,stdin);
+	
+	for(i=0; i<strlen(temp); i++) {
+		third[i]=temp[i];
 	}
-*/
-
 }

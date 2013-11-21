@@ -1,0 +1,11 @@
+11/8/2013
+
+2:00 AM: Made method for Parsing NSHRC File.
+
+11/15/2013
+
+12:00 AM: Fixed bug in Fileparsing method with memset
+
+11/20/2013:
+
+7:26 AM: Came up with portion of the report on file parsing

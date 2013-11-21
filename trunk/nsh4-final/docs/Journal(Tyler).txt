@@ -1,0 +1,43 @@
+--------[11/8/2013]--------
+[10.40AM] Met with group and got caught up on their previous
+		  progress. Program 4 work was divided up and my
+		  contribution would be to finish the Echo function.
+[11.10AM] Started to work on the Echo function.
+[11.40AM] Finished setting up the general structure for the 
+		  Echo function.
+
+--------[11/11/2013]--------
+[09.40AM] Started to work on the Echo function again.
+[10.20AM] Made significant progress on the Echo function. Was
+		  able to get the function set up for checking the input 
+		  strings for any symbols.
+[10.30AM] Met with group again to see where everyone's progrress
+		  was. After discussing, I decided to write the Line 
+		  Extension function as well as comparing the files in 
+		  the repository with my current files and making sure
+		  none of the files are overwritten by any commits. It's
+		  basically making sure the files are kept up-to-date for
+		  everyone.
+[11.20AM] The Echo function now successfully checks for the '@' 
+		  character and displays the content of the environment 
+		  variable that was entered.
+
+--------[11/13/2013]--------
+[10.00AM] Continued work on the Echo function.
+[10.20AM] Thought I got the Line extension working (within the Echo 
+		  function), but I misunderstood what the Line extension was 
+		  really supposed to do. Undid all the Line extension coding
+		  to put it in a separate function with custom coding for a
+		  special user input.
+[11.30AM] Was able to get the Line extension function working. It checks
+		  all lines of the original user input (including the first
+		  partition) and disregards anything entered in after the '$'
+		  character. I also made the inputting of the second line a bit
+		  more intuitive. It should be strongly implied to the user that
+		  the second line is for additional input.
+[11.32AM] Was able to break the LineExtension by using
+		  "echo testing$tryingtobreak". Returned a "Command
+		  not found." error.
+[12.15PM] False alarm. Just now figured out it was breaking because the 
+		  string length was longer than is supported. There seems to be no
+		  issues with the Line extension function.

@@ -1,0 +1,110 @@
+November 6
+10:05-10:10: Talked to Joseph about Program 4. We agreed that he would handle the file reading and I would do the rest.
+
+10:15: Tyler from another group called me and asked if he could join our group. He had been kicked out of his old group and nobody had told him until recently. I told him I would talk to Joseph before we decided anything.
+
+1:45-1:55: Implemented storing the home directory as an environmental variable. I used the code found in the Program 4 description, so this wasn't an issue.
+
+November 8
+10:20-11:20: Met with Tyler and caught him up to speed with the program. He agreed to work on the echo function and get something going by Monday
+
+11:45-1:00: Started converting our code to a makefile. Doing so created a lot of warnings that I'll need to check, and for some reason the update function isn't running correctly. I tried to compile the makefile to use in the gdb, but I can't successfully run the program in the gdb for some reason. I'll have to figure out what I'm doing wrong.
+
+November 9
+12:50-1:10: Tried to get the gdb to work with the makefile, but with no luck
+
+2:00-2:10: Forgot to make our memory function file into a .c instead of a .h. Changing that fixed the problem with duplicate variables.
+
+2:10-2:30: Tried to get the gdb to cooperate with me, but for whatever reason it wants to be difficult. The program compiles, but the gdb doesn't think it exists.
+
+2:30-2:50: Created new files and organized code better.
+
+3:00-3:35: Found out that for some reason the code that's used to get the home directory doesn't allow the program to be run in the gdb. I've commented out the code for the time being until I can find a way around this.
+
+November 10
+12:30-1:50: Implemented multiple arguments on a single line (the "?" operator). I changed a few things on the code, but I plan on talking to Joseph and Tyler about it Monday.
+
+1:50-2:10: Decided to make the complex string check function more efficient by not requiring the symbol's position as a parameter. Still need to do more testing on it.
+
+4:20-4:55: Fixed a few problems with the modified complex checking function. Mulitple commands works for the most part, but storing it in a complex string as an alias doesn't execute the commands correctly.
+
+4:55-5:35: Found the problem inside of the function that handles complex strings stored as aliases. For some reason, after running the complex alias, it removes everything after the first space.
+
+November 11
+10:20-10:35:Talked to Joseph about his part of the program. I told him about the debugging problem with the setHomeDir function, and I explained a little bit of the makefile to him. I told him I'd have the makefile version of the program up by today, and that I'd look over some of his code. Apparently he gets a wierd bug when processing the file.
+
+10:35-11:00: Talked to Tyler about his part of the program. I filled him in on how the makefile works and told him my progress. He showed me a little bit of his code, and I told him I'd have the makefile version of Program 4 up in a few hours.
+
+11:15-11:50: Commented my code and cleaned things up a bit before committing the makefile version.
+
+11:50-12:00: Looked over Joseph's code. Told him to comment his code and to send me his most recent version.
+
+12:40-12:50: Ran Joseph's updated code and found the problems. I told him what was going on so he knew what to fix.
+
+8:15-9:00: Fixed problem with handleAlias function. It no longer modifies the contents of the alias value.
+
+9:00-9:10: Suppressed random warnings from compiler through makefile. It sounds bad, but these warnings randomly appeared after creating the make file. I'm hoping it's not bad practice to supress warnings.
+
+November 13
+10:20-10:35: Talked to Joseph and Tyler about their parts of the program. I told both of them that I would like their parts by Friday and that I would work on fixing the bugs that were discovered from Program 3.
+
+November 14
+12:45-1:10: Fixed bug where placing only a comment or a null command displays "Command not found". An error no longer displays at these 2 cases.
+
+1:10-1:55: Tried to figure out a better way to handle aliases, but got frustrated and gave up for the time being.
+
+2:15-2:50: Still trying to figure out a better way to handle aliases. I can't decide on the order of translating an alias, running the comment filter, and running the multi function.
+
+3:15-3:30: Decided to reorganize nsh4.c to properly handle aliases. Still trying to figure out the best way to do this.
+
+4:00-4:50: Reorganized how alias processing works. It's much simpler than it was before, and it fixes most of the bugs we had in Program 3
+
+11:50-12:00: Tested Tyler's code and found that it didn't work.
+
+November 15
+10:30-10:40: Talked with Joseph about the file reading. He said he fixed the problem he was having and that it was good to go. I told him I'd test it and let him know if I found any problems.
+
+10:40-10:45: I called Tyler since he didn't show up for class. I told him that the program was extended until Wednesday and that the code he submitted didn't work. He seemed confused, so I'm expecting I'll have to help him on Monday.
+
+11:00-11:10: tested Joseph's code. It doesn't quite work the way it needs to.
+
+November 17
+11:00-11:30: Condensed Joseph's file processing function to work more efficiently which also fixed Joseph's code. I also added Tyler's name to all of the files.
+
+November 18
+10:15: Tyler wasn't in class again, so I called him and told him I needed his part by Wednesday morning.
+
+November 19
+1:50-2:00: I thought I would test Tyler's code before I went to bed since he seemed confident. It still doesn't work.
+
+10:20: I sent Tyler a text that he needs to call me so we can talk about his code.
+
+4:30: Sent Tyler an email telling him what I planned on telling him over the phone.
+
+5:00: Tyler called me and told me he would send me his most recent build of the code. I told him I would test it out and let him know if I found any problems.
+
+5:30-5:40: Tested Tyler's code and found problems.
+
+5:40: I called Tyler to tell him the problems I found in the code. I told him I would send him a list of things I found wrong.
+
+6:50: Emailed Tyler a screenshot of my test data and gave a summary of what was wrong.
+
+November 20
+
+10:30: I call Tyler since he didn't show up for class. He told me he had been working on his part of the code all night and that he slept in. He also told me the code was almost done, but his graphics card was giving him problems so he didn't commit it yet. He told me he would have the code done by 4:30. I told him that if it wasn't working perfectly by 4:30 that I would kick him out of the group.
+
+11:30: Just in case Tyler doesn't get his part done, I decided to go ahead and start my own version of the code. For now I'll be starting with line extension.
+
+11:30-12:10: I'm not sure if Tyler just doesn't know what he's doing, but I've already finished a better version of line extension.
+
+12:40-1:00: Since line extension was easy, I went ahead and started the echo function
+
+1:00-1:10: Tyler sent me his code for line extension so I could test it. I found some bugs (bugs that my version doesn't have) and told him about them.
+
+1:10-1:35: Finished the echo command. I still need to do more testing, but it seems to work.
+
+2:45-3:45: Tyler called me to help him debug his functions. I helped him for awhile, but decided to tell him I already finished his part. I decided that since he at least tried his best to get the functions working that I wouldn't kick him out of the group, so for the time being he's still in.
+
+4:30-5:00: Did a little bit of debugging and fixed a few minor issues. I also added more comments to a few functions.
+
+10:30-11:10: Compiled the report, wrote my portion of it, and took some screenshots.

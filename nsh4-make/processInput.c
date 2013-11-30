@@ -86,6 +86,56 @@ nshUse(char* value){
 	}
 }
 
+nshWhere(char* path, char* type, char* name)
+{
+    //Remove Whiteshpace from the path.
+    //Insert the file name at the end of every token. Check for existence.
+
+
+    char* folder = strtok(path, ",");
+    while(folder!= NULL)
+    {
+        if(path[strlen(path)-1] != '/')
+        {
+            //rearrange path so there's a slash at the end
+        }
+        char* target = strcat(path, name);
+        FILE *file = fopen(FILENAME, "r");
+        if(file!= NULL)
+        {
+            if(strcmp(type, "read")==0)
+            {
+
+            }
+            else if(strcmp(type, "write")==0)
+            {
+
+            }
+             else if(strcmp(type, "run")==0)
+            {
+
+            }
+             else if(strcmp(type, "dir")==0)
+            {
+
+            }
+            else if(strcmp(type, "file")==0)
+            {
+
+            }
+            else
+            {
+
+            }
+
+        }
+        folder = strtok(NULL, ",");
+    }
+
+
+
+}
+
 
 //Extends a variable
 nshExtend(char* value){

@@ -1,0 +1,28 @@
+# depslib dependency file v1.0
+1384493637 source:c:\users\owner\desktop\nsh4(make)\listfunctions.c
+	<stdio.h>
+	"var.h"
+
+1384493637 c:\users\owner\desktop\nsh4(make)\var.h
+
+1384493637 source:c:\users\owner\desktop\nsh4(make)\mem.c
+	"memblock.h"
+	<stdio.h>
+
+1384493637 c:\users\owner\desktop\nsh4(make)\memblock.h
+
+1384501365 source:c:\users\owner\desktop\nsh4(make)\nsh4.c
+	<stdio.h>
+	<string.h>
+	"var.h"
+
+1384496475 source:c:\users\owner\desktop\nsh4(make)\nshprep.c
+	<stdio.h>
+	<unistd.h>
+	<sys/types.h>
+	"var.h"
+
+1384493637 source:c:\users\owner\desktop\nsh4(make)\processinput.c
+	<stdio.h>
+	"var.h"
+

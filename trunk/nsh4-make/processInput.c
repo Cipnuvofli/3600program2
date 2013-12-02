@@ -93,42 +93,104 @@ nshWhere(char* path, char* type, char* name)
 
 
     char* folder = strtok(path, ",");
+    int hasSlash = 0;
+    int i = 0;
+    for(i = 0; i<strlen(name); i++)
+    {
+        if(name[i] == '/')
+        {
+            hasSlash = 1;
+        }
+    }
     while(folder!= NULL)
     {
-        if(path[strlen(path)-1] != '/')
+       /* if(path[strlen(path)-1] != '/')
         {
-            //rearrange path so there's a slash at the end
-        }
+            //resize path so an additional byte exists at the end
+        }*/
         char* target = strcat(path, name);
-        FILE *file = fopen(FILENAME, "r");
+        FILE *file = fopen(target, "r");
         if(file!= NULL)
         {
             if(strcmp(type, "read")==0)
             {
 
             }
-            else if(strcmp(type, "write")==0)
+            else
             {
-
+                printf("Could not read file\n");
+                return;
             }
-             else if(strcmp(type, "run")==0)
-            {
-
-            }
-             else if(strcmp(type, "dir")==0)
-            {
-
-            }
-            else if(strcmp(type, "file")==0)
+            if(strcmp(type, "write")==0)
             {
 
             }
             else
             {
-
+                printf("Could not write to file\n");
+                return;
+            }
+            if(strcmp(type, "run")==0)
+            {
+                if (strcmp(name,"set") == 0)
+                {
+                    printf("set is an internal command.\n");
+                }
+                else if (strcmp(name,"alias") == 0)
+                {
+                    printf("alias is an internal command.\n");
+                }
+                else if (strcmp(name,"tes") == 0)
+                {
+                     printf("tes is an internal command.\n");
+                }
+                else if (strcmp(name,"saila") == 0)
+                {
+                    printf("saila is an internal command.\n");
+                }
+                else if (strcmp(name,"echo") == 0)
+                {
+                    printf("echo is an internal command.\n");
+                }
+                else if (strcmp(name, "where") == 0)
+                {
+                     printf("where is an internal command.\n");
+                }
+                else if (strcmp(name,"exit") == 0)
+                {
+                     printf("exit is an internal command.\n");
+                }
+                else
+                {
+                    printf("Possible external command");
+                }
+            }
+            else
+            {
+                printf("Could not run file.\n");
+                return;
+            }
+            if(strcmp(type, "dir")==0)
+            {
+                printf("");
+            }
+            else
+            {
+                printf("Could not find directory\n");
+                return;
+            }
+            if(strcmp(type, "file")==0)
+            {
+                printf("");
+            }
+            else
+            {
+                printf("Could not find directory\n");
+                return;
             }
 
         }
+        fclose(file);
         folder = strtok(NULL, ",");
     }
 

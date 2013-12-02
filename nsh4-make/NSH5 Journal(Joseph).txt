@@ -1,0 +1,5 @@
+11-30-2013: Laid Groundwork for NSHWhere Method
+
+12-2-2013
+
+2:00 AM: Debugged NSHWhere

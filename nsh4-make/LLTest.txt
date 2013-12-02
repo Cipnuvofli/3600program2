@@ -1,0 +1,6 @@
+set blarg honk
+set what yeah
+alias bonk boink
+alias bing bong
+set 
+alias

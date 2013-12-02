@@ -5,6 +5,7 @@
 	Tyler Clements
 */
 #include <stdio.h>
+#include <sys/stat.h>
 #include "var.h"
 
 //Displays, inserts, or updates a new entry
@@ -93,6 +94,8 @@ nshWhere(char* path, char* type, char* name)
 
 
     char* folder = strtok(path, ",");
+    struct stat fileinfo;
+    int q;
     int hasSlash = 0;
     int i = 0;
     for(i = 0; i<strlen(name); i++)
@@ -112,22 +115,35 @@ nshWhere(char* path, char* type, char* name)
         FILE *file = fopen(target, "r");
         if(file!= NULL)
         {
-            if(strcmp(type, "read")==0)
+            q = stat(file, &fileinfo);
+            if(i == -1)
             {
-
-            }
-            else
-            {
-                printf("Could not read file\n");
+                printf("Unable to read filepermissions\n");
                 return;
             }
+            if(strcmp(type, "read")==0)
+            {
+                if(fileinfo.st_mode & (1<<9))//this should mean the user has a read permission
+                {
+                  printf("%s\n", target);
+                }
+                else
+                {
+                printf("You do not have read permission for this file\n");
+                return;
+                }
+            }
+
             if(strcmp(type, "write")==0)
             {
-
+                if(fileinfo.st_mode & (1<<8))//this should mean the user has a read permission
+                {
+                  printf("%s\n", target);
+                }
             }
             else
             {
-                printf("Could not write to file\n");
+                printf("You do not have write permission for this file");
                 return;
             }
             if(strcmp(type, "run")==0)

@@ -1,0 +1,7 @@
+11-30-2013: Laid Groundwork for NSHWhere Method
+
+12-2-2013
+
+2:00 AM: Debugged NSHWhere
+
+8-11 PM: Upgraded comments, wrote account of how external commands are handled for report.

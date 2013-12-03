@@ -28,11 +28,11 @@ but for some reason it doesn't let the gdb run.
 Returns the home directory.
 This code was taken from the Program4 description
 */
-/*char* setHomeDir(){
+char* setHomeDir(){
 	struct passwd *pw = getpwuid(getuid());
 	char* homedir = pw->pw_dir;
 	return homedir;
-}*/
+}
 
 //Set native commands
 setNative(){
@@ -54,7 +54,7 @@ setNative(){
 	nshInsert(&alias, "where","where");
 
 	//Sets the home directory. Comment out when debugging.
-//	nshInsert(&var,"Path",setHomeDir());
+	nshInsert(&var,"Path",setHomeDir());
 
 }
 

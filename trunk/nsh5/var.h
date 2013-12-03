@@ -3,6 +3,18 @@
 	Westley Huebner
 	Joseph Penrod
 	Tyler Clements
+
+	Last Modified by: Joseph Penrod on 12-2-2013
+*/
+
+/*
+The Env data structure stores a name or alias in the 100 character array that is name
+The Value array stores what the name is supposed to be equal to
+the next point takes the program to another env
+
+
+The EnvP is shorthand for a pointer to an Env
+
 */
 
 struct env {
@@ -21,9 +33,9 @@ typedef struct env *EnvP;
 EnvP var,alias,native;
 
 //input strings
-EnvP command;
-char input[80];
-char first[20];
-char second[120];
-char third[120];
-char *secondPath;
+EnvP command;//Stores the input command once it's identity is determined
+char input[80];//Stores user input
+char first[20];//Stores the first token
+char second[120];//Stores the second token
+char third[120];//Stores the thrid token
+char *secondPath;//Used for handling multidirectory versions of the path environment variable

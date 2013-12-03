@@ -3,6 +3,10 @@
 	Westley Huebner
 	Joseph Penrod
 	Tyler Clements
+
+    Last Modified by: Joseph Penrod, 12-2-2013
+
+    Functional Description: This file sets the Home directory and preloads the native commands in a way that prevents them from being accidentally overwritten, even when used as aliases.
 */
 
 
@@ -38,6 +42,7 @@ setNative(){
 	nshInsert(&native,"saila","saila");
 	nshInsert(&native,"echo","echo");
 	nshInsert(&native,"exit","exit");
+	nshInsert(&native, "where","where");
 
 	//fill alias list for display
 	nshInsert(&alias,"set","set");
@@ -46,6 +51,7 @@ setNative(){
 	nshInsert(&alias,"exit","exit");
 	nshInsert(&alias,"echo","echo");
 	nshInsert(&alias,"saila","saila");
+	nshInsert(&alias, "where","where");
 
 	//Sets the home directory. Comment out when debugging.
 //	nshInsert(&var,"Path",setHomeDir());

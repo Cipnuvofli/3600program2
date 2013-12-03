@@ -3,6 +3,19 @@
 	Westley Huebner
 	Joseph Penrod
 	Tyler Clements
+
+    Last Modified by: Joseph Penrod, 12-2-2013
+
+    Functional Description: This file is devoted to working with the data structure that stores Environment Variables/Aliases.
+
+
+    1. NSH Display displays the contents of the structure conductor points too
+    2. NSH Insert adds an environment variable or alias to a list.
+    3. NSH Delete removes an item from a list.
+    4. NSH Update overwrites the value of an existing environment variable or alias
+    5. NSH Find returns the list that was used as an argument if the name argument exists as a name in the list
+    6. HSH Head takes a pointer to the head of the list and returns the same pointer. It seems like a redundancy.
+    7. NSH Next advances a pointer's location in its corresponding data structure.
 */
 #include <stdio.h>
 #include "var.h"

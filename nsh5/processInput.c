@@ -3,6 +3,11 @@
 	Westley Huebner
 	Joseph Penrod
 	Tyler Clements
+
+	Last Modified by: Joseph Penrod, 12-2-2013
+
+    Functional Description: This file is devoted to translating the shell's input into the internal commands
+
 */
 #include <stdio.h>
 #include "var.h"
@@ -10,6 +15,8 @@
 void* nshGetExtend(char*);
 
 //Displays, inserts, or updates a new entry
+//Input: Aliases or environment variables, the name of a new veriable, and its value
+//Output:No direct output. New name and value added to list if successful.
 commandSet(EnvP *list, char* name, char* value){
 	EnvP com,var,temp;
 	//make sure var name exists
@@ -60,6 +67,8 @@ commandSet(EnvP *list, char* name, char* value){
 }
 
 //Checks to see when a variable is used
+//Input: Takes the value of the user input.
+//Output: Launching the extension process for an environment variable if @ is found.
 nshUse(char* value){
 	EnvP temp;
 
@@ -90,6 +99,8 @@ nshUse(char* value){
 
 
 //Extends a variable
+//Input: User input with an @sign for an environment variable
+//Output: An extended environmnet variable
 nshExtend(char* value){
 
 	EnvP temp;
@@ -146,6 +157,8 @@ nshExtend(char* value){
 }
 
 //Checks to see if a symbol is found inside of a complex string ({ })
+//Input:A complex string input by the user
+//Output: Whether or not the symbol is in the brackets
 int nshComplex(char* var, char* symb) {
 	int j,start,end,check,pos;
 	check = 0;
@@ -213,6 +226,8 @@ int nshMulti(char* input){
 }
 
 //Line extension
+//Input: A user input string
+//Output: If the $ sign, used for line extension is found, a string with the input before the $sign and where the input is supposed to pick up again, concatenated
 void lineExtension(char* input){
 
 	//Check if line extension is used or if it is used outside of a complex string
@@ -258,6 +273,7 @@ void lineExtension(char* input){
 }
 
 //Process the echo command
+
 void nshEcho(char* second, char*third){
 
 
@@ -384,6 +400,7 @@ nshExternal(char *command, char* second, char* third){
 
 //Checks for variables that have been extended. This function will separate the values so the function calling
 //them can run properly. This is specifically used for multiple paths.
+
 void* nshGetExtend(char* value){
 
 	char *temp = strtok(value,"!");

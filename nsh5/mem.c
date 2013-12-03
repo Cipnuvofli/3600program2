@@ -3,6 +3,15 @@
 	Westley Huebner
 	Joseph Penrod
 	Tyler Clements
+
+    Last Modified by: Joseph Penrod, 12-2-2013
+
+    Functional Description:
+
+    1. NSHMalloc allocates space in a static array of characters as memory
+    2. NSHFree deallocates space in a static character array memory that is currently allocated.
+    3. NSHCalloc does the same thing as NSHMalloc, but zeroes the block of memory first
+    4. NSHRealloc finds a larger block in the array, if the memory allocated is insufficient
 */
 
 #include "memblock.h"

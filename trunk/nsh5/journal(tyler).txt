@@ -1,0 +1,7 @@
+--------[12/2/2013]--------
+[02.09PM] Met with group and got caught up on their previous
+		  progress. Program 4 work was divided up and my
+		  contribution would be to finish the Echo function.
+		  
+[08.10PM] Worked on the where functionality til about 11.15PM,
+		  and was able to get it all fully functional, with no bugs.

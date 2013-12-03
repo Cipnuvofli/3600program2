@@ -165,10 +165,6 @@ void splitInput(char* input) {
 
         //Create pointer to separate input
         char *inputSplit = strtok(input, " ");
-        //Create pointer to separate input
-        char *inputSplit = strtok(input, " ");
-        //Create pointer to separate input
-        char *inputSplit = strtok(input, " ");
 
         //Make sure there is something for the first argument
         if (inputSplit != NULL)
@@ -264,3 +260,7 @@ parseResourceFile(char* FILENAME, int argumentfile)
 
     }
     else
+    {
+        perror("NSHRC File not found");
+    }
+}

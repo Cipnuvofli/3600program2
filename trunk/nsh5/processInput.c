@@ -302,21 +302,23 @@ void nshEcho(char* second, char*third){
 
 nshExternal(char *command, char* second, char* third){
 
-	int external,test;
+	int external,test,check;
 	char Path[100] = "/bin";
 	EnvP PathBlock;
 	char *temp;
+	char *temp2;
+	char tempPath[100];
 
 	if (nshFind(var,"Path") == NULL)
 	{
-		printf("\tPath variable not found\n");
+		printf("\tVariable \"Path\" is not found\n");
 		return;
 	}
 
 	PathBlock = nshFind(var,"Path");
 	strcpy(Path,PathBlock->value);
-	strcat(Path,"/");
-	strcat(Path,command);
+	//strcat(Path,"/");
+	//strcat(Path,command);
 
 
 
@@ -326,12 +328,24 @@ nshExternal(char *command, char* second, char* third){
 	//Child process
 	if (external == 0)
 	{
+
+
+		//Split path into 2 tokens
 		temp = strtok(Path,"!");
+		temp2 = strtok(NULL,"\0");
+
+		//Store the second token to keep it from being modified by strcat
+		if(temp2 != NULL)
+			strcpy(tempPath,temp2);
+
+		//Loop through each value in the Path variable
 		while(temp != NULL)
 		{
+		//Add command to path value
 		strcat(temp,"/");
 		strcat(temp,command);
 
+		//Check to see how many arguments are being used
 		if (second[0] == '\0')
 			execl(temp,command,0,test);
 		else if (third[0] == '\0')
@@ -340,7 +354,14 @@ nshExternal(char *command, char* second, char* third){
 			execl(temp,command,second,third,0,test);
 
 
-		temp = strtok(NULL,"!");
+		strcpy(Path,tempPath);
+		//Split the path into 2 tokens again
+		temp = strtok(Path,"!");
+		temp2 = strtok(NULL,"\0");
+
+		//Check to see if temp2 is null
+		if(temp2 != NULL)
+			strcpy(tempPath,temp2);
 		}
 
 		if(!test)

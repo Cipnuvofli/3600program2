@@ -10,6 +10,11 @@
 
 */
 #include <stdio.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <stdlib.h>
+#include <errno.h>
 #include "var.h"
 
 void* nshGetExtend(char*);
@@ -398,14 +403,124 @@ nshExternal(char *command, char* second, char* third){
 
 }
 
-//Checks for variables that have been extended. This function will separate the values so the function calling
-//them can run properly. This is specifically used for multiple paths.
+nshWhere(char* second, char* third) {
 
-void* nshGetExtend(char* value){
+        //test stuff
+//      char Path[40] = "/home/tgc0042";
 
-	char *temp = strtok(value,"!");
-	secondPath = strtok(NULL,"\0");
-	printf("\t%s\t%s\n",temp,secondPath);
-	return temp;
+        EnvP tpath;
+        struct stat fileStat;
+        int access;
+        char temp[200];
+        char * count,temp2,temp3;
+        char tempPath[200];
+        count=strchr(third,'/');
 
+        if(count == NULL) {
+
+
+                tpath = nshFind(var,"Path");
+                strcpy(temp, (tpath->value));
+                strcat(temp,"/");
+                strcat(temp,third);
+        }
+        else {
+
+                strcpy(temp, third);
+        }
+
+        if(stat(temp, &fileStat) < 0) {
+
+                printf("%s was not found.\n", third);
+
+                return;
+        }
+
+        printf("\t");
+
+
+        //Checking to see if the file is executable
+        if(strcmp(second, "run") == 0) {
+
+                if(nshFind(native, third) != NULL) {
+
+                        printf("%s is an internal command.\n", third);
+
+                        return;
+                }
+                if( (fileStat.st_mode & S_IXUSR) || (fileStat.st_mode & S_IXGRP) || (fileStat.st_mode & S_IXOTH) ) {
+
+                        printf("%s\n", temp);
+                        return;
+                }
+
+                printf("%s was not found.\n", third);
+        }
+
+        //Checking to see if there is a directory
+        if( (strcmp(second, "dir") == 0) && (stat(temp, &fileStat) != -1) ) {
+
+                printf("%s\n",temp);
+
+                return;
+        }
+
+        //Checking to see if the file is readable
+        if(strcmp(second, "read") == 0) {
+                if( (fileStat.st_mode & S_IRUSR) || (fileStat.st_mode & S_IRGRP) || (fileStat.st_mode & S_IROTH) ) {
+
+                        printf("%s\n", temp);
+
+                        return;
+                }
+
+                printf("Specified file with read permissions not found in current directory.\n");
+        }
+
+        //Checking to see if the file is writeable
+        if(strcmp(second, "write") == 0) {
+                if( (fileStat.st_mode & S_IWUSR) || (fileStat.st_mode & S_IWGRP) || (fileStat.st_mode & S_IWOTH)) {
+
+                        printf("\t%s\n", temp);
+
+                        return;
+                }
+
+                printf("Specified file with write permissions not found in current directory.\n");
+        }
+
+        //Checking to see if the file exists
+        if(strcmp(second, "file") == 0 ) {
+                if(S_ISREG(fileStat.st_mode) != 0) {
+
+                        //the "S_ISREG" is simply testing for a regular file
+                        printf("The file exists.\n");
+                        printf("\tPath: %s\n", temp);
+
+                        return;
+                }
+        }
+
+        //Checking for any permissions at all and listing all permissions
+        if(strcmp(second, "any") == 0) {
+
+                printf("\n%s\n", temp);
+
+                printf("File Permissions for: %s\n", temp);
+                printf("\t");
+                printf( (S_ISDIR(fileStat.st_mode)) ? "d" : "-" );
+                printf( (fileStat.st_mode & S_IRUSR) ? "r" : "-" );
+                printf( (fileStat.st_mode & S_IWUSR) ? "w" : "-" );
+                printf( (fileStat.st_mode & S_IXUSR) ? "x" : "-" );
+                printf( (fileStat.st_mode & S_IRGRP) ? "r" : "-" );
+                printf( (fileStat.st_mode & S_IWGRP) ? "w" : "-" );
+                printf( (fileStat.st_mode & S_IXGRP) ? "x" : "-" );
+                printf( (fileStat.st_mode & S_IROTH) ? "r" : "-" );
+                printf( (fileStat.st_mode & S_IWOTH) ? "w" : "-" );
+                printf( (fileStat.st_mode & S_IXOTH) ? "x" : "-" );
+                printf("\n");
+
+                return;
+        }
 }
+

@@ -97,6 +97,8 @@ void userInput(char* input){
 			nshDelete(&alias,second);
 		else if (strcmp(first,"echo") == 0)
 			nshEcho(second, third);
+		else if (strcmp(first,"where") == 0)
+            nshWhere(second, third);
 		else if (strcmp(first,"exit") == 0)
 			cont = 0;
 		else
